@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv /bin/sh
+
+set -e 
+
+echo "Starting Hazelcast..."
+
+cd ${HZ_HOME} && ./server.sh
