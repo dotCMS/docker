@@ -30,7 +30,7 @@
         <name>{{ .Env.HAZELCAST_GROUP_NAME }}</name>
         <!-- <password>dev-pass</password>-->
     </group>
-    <management-center enabled="{{ .Env.HAZELCAST_MANCENTER_ENABLED }}">{{ with .Env.HZ_MANCENTER_URL }}{{ . }}{{ end }}</management-center>
+    <management-center enabled="{{ .Env.HAZELCAST_MANCENTER_ENABLED }}">{{ with .Env.HAZELCAST_MANCENTER_URL }}{{ . }}{{ end }}</management-center>
     <network>
         <public-address>{{ .Env.HAZELCAST_BIND_ADDR }}</public-address>
         <port auto-increment="false">{{ .Env.HAZELCAST_PORT }}</port>
