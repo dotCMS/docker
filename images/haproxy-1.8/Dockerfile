@@ -30,6 +30,7 @@ RUN wget --quiet https://github.com/jwilder/dockerize/releases/download/$DOCKERI
 
 
 COPY ROOT/ /
+RUN mkdir -p /srv/config
 RUN find /etc/cont-init.d/ /etc/fix-attrs.d/ /srv/ -type f -name "*.sh" -exec chmod 500 {} \; 
 
 ENV SERVICE_DELAY_DEFAULT_MIN 1

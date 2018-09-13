@@ -26,6 +26,8 @@ defaults
     timeout connect 30s
     timeout client-fin 30s
 
+    compression algo gzip
+    compression type text/plain text/css application/javascript application/x-javascript text/javascript text/json application/json text/xml application/xml application/xhtml+xml application/rss+xml application/vnd.ms-fontobject application/x-font-opentype application/x-font-truetype application/x-font-ttf  font/eot font/opentype font/otf image/svg+xml image/vnd.microsoft.icon
 
     {{ if .Env.HAPROXY_ADMIN_PASSWORD }}
     stats enable
@@ -38,6 +40,8 @@ defaults
 frontend http
     bind *:80
 
+    filter compression
+
     {{ if isTrue .Env.HAPROXY_REDIRECT_HTTPS_ALL }}
     redirect scheme https code 301
     {{ else }}
@@ -47,6 +51,9 @@ frontend http
 {{ if isTrue .Env.HAPROXY_TLS_ENABLE }}
 frontend https
     bind  *:443  ssl crt {{ .Env.HAPROXY_CERT_PATH }} alpn h2,http/1.1
+
+    filter compression
+
     default_backend dotcms_https
     
 {{ end }}  
