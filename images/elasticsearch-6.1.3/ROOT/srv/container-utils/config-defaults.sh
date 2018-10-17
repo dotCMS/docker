@@ -5,6 +5,7 @@
 ##    Please do not alter this file, but set these as environment variables on the container launch if needed.
 ###
 
+set -e
 
 : ${PROVIDER_ELASTICSEARCH_HEAP_SIZE:="1024m"}
 
