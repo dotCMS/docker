@@ -5,6 +5,7 @@ set -e
 if [[ "$1" == "elasticsearch" || -z "$1" ]]; then
 
     echo "Starting Elasticsearch server..."
+    touch /srv/INIT_STARTED_ELASTICSEARCH
 
     cd /srv && mkdir run && chown elasticsearch:elasticsearch run
     gosu elasticsearch:elasticsearch \

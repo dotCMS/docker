@@ -1,13 +1,13 @@
 # ======================== Elasticsearch Configuration =========================
 #
 
-{{ $es_port := .Env.ELASTICSEARCH_PORT_TRANSPORT }}
+{{ $es_port := .Env.PROVIDER_ELASTICSEARCH_PORT_TRANSPORT }}
 
-cluster.name: {{ .Env.ELASTICSEARCH_CLUSTER_NAME }}
+cluster.name: {{ .Env.PROVIDER_ELASTICSEARCH_CLUSTER_NAME }}
 
 transport:
-    host: {{ .Env.ELASTICSEARCH_ADDR_TRANSPORT }}
-    tcp.port: {{ .Env.ELASTICSEARCH_PORT_TRANSPORT }}
+    host: {{ .Env.PROVIDER_ELASTICSEARCH_ADDR_TRANSPORT }}
+    tcp.port: {{ .Env.PROVIDER_ELASTICSEARCH_PORT_TRANSPORT }}
     tcp.connect_timeout: 2s
 
 discovery.zen:
@@ -21,15 +21,15 @@ discovery.zen:
         ping_retries: 3
 
 node:
-    master: {{ .Env.ELASTICSEARCH_NODE_MASTER }}
-    data: {{ .Env.ELASTICSEARCH_NODE_DATA }}
+    master: {{ .Env.PROVIDER_ELASTICSEARCH_NODE_MASTER }}
+    data: {{ .Env.PROVIDER_ELASTICSEARCH_NODE_DATA }}
     name: {{ .Env.HOSTNAME }}
 
 http:
-    enabled: true
+    enabled: {{ .Env.PROVIDER_ELASTICSEARCH_ENABLE_HTTP }}
     cors.enabled: false
-    port: {{ .Env.ELASTICSEARCH_PORT_HTTP }}
-    host: {{ .Env.ELASTICSEARCH_ADDR_HTTP }}
+    port: {{ .Env.PROVIDER_ELASTICSEARCH_PORT_HTTP }}
+    host: {{ .Env.PROVIDER_ELASTICSEARCH_ADDR_HTTP }}
 
 path:
     data: /data
