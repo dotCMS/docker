@@ -2,41 +2,33 @@
 
 set -e
 
+source /srv/container-utils/discovery-include.sh
+source /srv/container-utils/config-defaults.sh
+
 echo "/srv/hazelcast.xml" >>/srv/templatable-config.txt
 
-# Set defaults for unset vars
-: ${HAZELCAST_SERVICE_DELAY_MIN:="${SERVICE_DELAY_DEFAULT_MIN}"}
-: ${HAZELCAST_SERVICE_DELAY_STEP:="${SERVICE_DELAY_DEFAULT_STEP}"}
-: ${HAZELCAST_SERVICE_DELAY_MAX:="${SERVICE_DELAY_DEFAULT_MAX}"}
-
-: ${HAZELCAST_GROUP_NAME:="dotCMS"}
-: ${HAZELCAST_SERVICE_NAMES:="hazelcast"}
-: ${HAZELCAST_PORT:="5701"}
-
-if [[ -n "${HAZELCAST_MANCENTER_URL}" ]]; then
-    HAZELCAST_MANCENTER_ENABLED="true"
+if [[ -n "${PROVIDER_HAZELCAST_MANCENTER_URL}" ]]; then
+    PROVIDER_HAZELCAST_MANCENTER_ENABLED="true"
 else
-    HAZELCAST_MANCENTER_ENABLED="false"
+    PROVIDER_HAZELCAST_MANCENTER_ENABLED="false"
 fi
- 
-source /srv/container-utils/lib.inc
 
-sleep ${HAZELCAST_SERVICE_DELAY_MIN}
+sleep ${PROVIDER_HAZELCAST_SVC_DELAY_MIN}
 
-count=$(( ${HAZELCAST_SERVICE_DELAY_MIN} + RANDOM % ${HAZELCAST_SERVICE_DELAY_MAX} ))
+count=$(( ${PROVIDER_HAZELCAST_SVC_DELAY_MIN} + RANDOM % ${PROVIDER_HAZELCAST_SVC_DELAY_MAX} ))
 echo "Trying discovery for ~${count} seconds"
-while [[ $count -ge ${HAZELCAST_SERVICE_DELAY_MIN} ]]; do
+while [[ $count -ge ${PROVIDER_HAZELCAST_SVC_DELAY_MIN} ]]; do
 
-    [[ -n "${HAZELCAST_BIND_ADDR}" ]] || HAZELCAST_BIND_ADDR=$( getRouteAddrToService "${HAZELCAST_SERVICE_NAMES}" )
+    [[ -n "${PROVIDER_HAZELCAST_BIND_ADDR}" ]] || PROVIDER_HAZELCAST_BIND_ADDR=$( getRouteAddrToService "${PROVIDER_HAZELCAST_DNSNAME}" )
 
-    hz_candidate_ip_list=$( getServiceIpAddresses "${HAZELCAST_SERVICE_NAMES}" $( getMyIpAddresses $( getMyNetworkInterfaces ) ) )
+    hz_candidate_ip_list=$( getServiceIpAddresses "${PROVIDER_HAZELCAST_DNSNAME}" $( getMyIpAddresses $( getMyNetworkInterfaces ) ) )
     hz_candidate_ips=()
     IFS=',' read -ra hz_candidate_ips <<< "${hz_candidate_ip_list}" && unset IFS
 
     if [[ ${#hz_candidate_ips[@]} -gt 0 ]]; then
         for hz_candidate_ip in "${hz_candidate_ips[@]}"; do
 
-            hz_member_ips=($(wget --quiet -O - -T ${HAZELCAST_SERVICE_DELAY_STEP} ${hz_candidate_ip}:${HAZELCAST_PORT}/hazelcast/rest/cluster 2>/dev/null | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" || : ) )
+            hz_member_ips=($(wget --quiet -O - -T ${PROVIDER_HAZELCAST_SVC_DELAY_STEP} ${hz_candidate_ip}:${PROVIDER_HAZELCAST_PORT}/hazelcast/rest/cluster 2>/dev/null | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b" || : ) )
             if [[ ${#hz_member_ips[@]} -lt 1 ]]; then
                 echo "No members found from candidate ${hz_candidate_ip}";  
             else
@@ -47,34 +39,34 @@ while [[ $count -ge ${HAZELCAST_SERVICE_DELAY_MIN} ]]; do
                     fi
                 done
             fi
-            sleep ${HAZELCAST_SERVICE_DELAY_STEP};
-            (( count-=${HAZELCAST_SERVICE_DELAY_STEP} )) || :
+            sleep ${PROVIDER_HAZELCAST_SVC_DELAY_STEP};
+            (( count-=${PROVIDER_HAZELCAST_SVC_DELAY_STEP} )) || :
         done
     else
-        echo "No candidate members found, waiting ${HAZELCAST_SERVICE_DELAY_STEP} seconds..."
-        sleep ${HAZELCAST_SERVICE_DELAY_STEP}
-        (( count-=${HAZELCAST_SERVICE_DELAY_STEP} )) || :
+        echo "No candidate members found, waiting ${PROVIDER_HAZELCAST_SVC_DELAY_STEP} seconds..."
+        sleep ${PROVIDER_HAZELCAST_SVC_DELAY_STEP}
+        (( count-=${PROVIDER_HAZELCAST_SVC_DELAY_STEP} )) || :
     fi
 done
 
 
 # Bind address fallback
-if [[ ! -n "${HAZELCAST_BIND_ADDR}" ]]; then
+if [[ ! -n "${PROVIDER_HAZELCAST_BIND_ADDR}" ]]; then
     echo "Service discovery failure, using localhost"
-    HAZELCAST_BIND_ADDR="127.0.0.1"
+    PROVIDER_HAZELCAST_BIND_ADDR="127.0.0.1"
 fi
 
 if [[  ${#hz_members[@]} -eq 0 ]]; then
-    echo "No live members found, using self (${HAZELCAST_BIND_ADDR})"
-    hz_members+=(${HAZELCAST_BIND_ADDR})
+    echo "No live members found, using self (${PROVIDER_HAZELCAST_BIND_ADDR})"
+    hz_members+=(${PROVIDER_HAZELCAST_BIND_ADDR})
 fi
 
-echo "HAZELCAST_GROUP_NAME=${HAZELCAST_GROUP_NAME}" >> /srv/config.ini
-echo "HAZELCAST_PORT=${HAZELCAST_PORT}" >> /srv/config.ini
-echo "HAZELCAST_BIND_ADDR=${HAZELCAST_BIND_ADDR}" >> /srv/config.ini
-echo "HAZELCAST_MANCENTER_ENABLED=${HAZELCAST_MANCENTER_ENABLED}" >> /srv/config.ini
-
-echo "HAZELCAST_DISCOVERY_MEMBERS=$(join , ${hz_members[@]})" >> /srv/config.ini
+echo "PROVIDER_HAZELCAST_GROUPNAME=${PROVIDER_HAZELCAST_GROUPNAME}" >> /srv/config.ini
+echo "PROVIDER_HAZELCAST_PORT=${PROVIDER_HAZELCAST_PORT}" >> /srv/config.ini
+echo "PROVIDER_HAZELCAST_BIND_ADDR=${PROVIDER_HAZELCAST_BIND_ADDR}" >> /srv/config.ini
+echo "PROVIDER_HAZELCAST_MANCENTER_ENABLED=${PROVIDER_HAZELCAST_MANCENTER_ENABLED}" >> /srv/config.ini
+echo "PROVIDER_HAZELCAST_MANCENTER_URL=${PROVIDER_HAZELCAST_MANCENTER_URL}" >> /srv/config.ini
+echo "PROVIDER_HAZELCAST_DISCOVERY_MEMBERS=$(join , ${hz_members[@]})" >> /srv/config.ini
 
 
 

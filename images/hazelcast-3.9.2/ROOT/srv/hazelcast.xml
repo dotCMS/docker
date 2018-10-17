@@ -27,27 +27,27 @@
         <property name="hazelcast.socket.bind.any">false</property>
     </properties> 
     <group>
-        <name>{{ .Env.HAZELCAST_GROUP_NAME }}</name>
+        <name>{{ .Env.PROVIDER_HAZELCAST_GROUPNAME }}</name>
         <!-- <password>dev-pass</password>-->
     </group>
-    <management-center enabled="{{ .Env.HAZELCAST_MANCENTER_ENABLED }}">{{ with .Env.HAZELCAST_MANCENTER_URL }}{{ . }}{{ end }}</management-center>
+    <management-center enabled="{{ .Env.PROVIDER_HAZELCAST_MANCENTER_ENABLED }}">{{ with .Env.PROVIDER_HAZELCAST_MANCENTER_URL }}{{ . }}{{ end }}</management-center>
     <network>
-        <public-address>{{ .Env.HAZELCAST_BIND_ADDR }}</public-address>
-        <port auto-increment="false">{{ .Env.HAZELCAST_PORT }}</port>
+        <public-address>{{ .Env.PROVIDER_HAZELCAST_BIND_ADDR }}</public-address>
+        <port auto-increment="false">{{ .Env.PROVIDER_HAZELCAST_PORT }}</port>
         <outbound-ports>
             <ports>0</ports>
         </outbound-ports>
         <join>
             <multicast enabled="false" />
             <aws enabled="false" />
-            <tcp-ip enabled="true">{{ range split .Env.HAZELCAST_DISCOVERY_MEMBERS "," }}
+            <tcp-ip enabled="true">{{ range split .Env.PROVIDER_HAZELCAST_DISCOVERY_MEMBERS "," }}
                 <member>{{ . }}</member>{{ end }}
             </tcp-ip>
         </join>
 
 
         <interfaces enabled="true">
-            <interface>{{ .Env.HAZELCAST_BIND_ADDR }}</interface>
+            <interface>{{ .Env.PROVIDER_HAZELCAST_BIND_ADDR }}</interface>
         </interfaces>
         
         <ssl enabled="false"/>

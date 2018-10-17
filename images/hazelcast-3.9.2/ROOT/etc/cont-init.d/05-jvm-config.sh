@@ -2,12 +2,10 @@
 
 set -e
 
+source /srv/container-utils/config-defaults.sh
+
 echo "/srv/server.sh" >>/srv/templatable-config.txt
 
-
-: ${HAZELCAST_HEAP_MIN:="128m"}
-: ${HAZELCAST_HEAP_MAX:="1024m"}
-
-echo "HAZELCAST_HEAP_MIN=${HAZELCAST_HEAP_MIN}" >> /srv/config.ini
-echo "HAZELCAST_HEAP_MAX=${HAZELCAST_HEAP_MAX}" >> /srv/config.ini
+echo "MIN_HEAP_SIZE=${PROVIDER_HAZELCAST_HEAP_MIN}" >> /srv/config.ini
+echo "MAX_HEAP_SIZE=${PROVIDER_HAZELCAST_HEAP_MAX}" >> /srv/config.ini
 
