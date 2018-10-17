@@ -2,8 +2,8 @@
 
 set -e
 
-: ${ELASTICSEARCH_HEAP_SIZE:="1024m"}
+source /srv/container-utils/config-defaults.sh
 
-export ELASTICSEARCH_HEAP_SIZE
+export PROVIDER_ELASTICSEARCH_HEAP_SIZE
 
 dockerize -template /srv/config/jvm.options:/srv/config/jvm.options

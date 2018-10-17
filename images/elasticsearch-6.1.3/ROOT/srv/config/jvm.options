@@ -19,8 +19,8 @@
 # Xms represents the initial size of total heap space
 # Xmx represents the maximum size of total heap space
 
--Xms{{ .Env.ELASTICSEARCH_HEAP_SIZE }}
--Xmx{{ .Env.ELASTICSEARCH_HEAP_SIZE }}
+-Xms{{ .Env.PROVIDER_ELASTICSEARCH_HEAP_SIZE }}
+-Xmx{{ .Env.PROVIDER_ELASTICSEARCH_HEAP_SIZE }}
 
 ################################################################
 ## Expert settings
