@@ -9,7 +9,7 @@ set -e
 
 : ${PROVIDER_ELASTICSEARCH_HEAP_SIZE:="1024m"}
 
-# IP or hostname of external Elasticsearch service (can be multi-valued RR DNS record). Leave unset for embedded Elasticsearch
+# IP or hostname of external Elasticsearch service (can be multi-valued RR DNS record). Leave unset for standalone Elasticsearch
 : ${PROVIDER_ELASTICSEARCH_DNSNAMES:=""}
 : ${PROVIDER_ELASTICSEARCH_SVC_DELAY_MIN:="${SERVICE_DELAY_DEFAULT_MIN}"}
 : ${PROVIDER_ELASTICSEARCH_SVC_DELAY_STEP:="${SERVICE_DELAY_DEFAULT_STEP}"}
