@@ -13,7 +13,7 @@ echo "Trying discovery for ${HAPROXY_SERVICE_DELAY_MAX} seconds"
 count=0
 while [[ $count -le ${HAPROXY_SERVICE_DELAY_MAX} ]]; do
 
-    server_count=$(discoverBackends "${DOTCMS_SERVICE_NAMES}")
+    server_count=$(discoverBackends "${CMS_DNSNAMES}")
 
     if [[ ${server_count} -gt 0 ]]; then
 
@@ -36,14 +36,14 @@ else
     HAPROXY_TLS_ENABLE="false"
 fi
 
-export DOTCMS_PORT_HTTP
-export DOTCMS_PORT_HTTPS
+export CMS_PORT_HTTP
+export CMS_PORT_HTTPS
 export HAPROXY_TLS_ENABLE
 export HAPROXY_ADMIN_PASSWORD
 export HAPROXY_REDIRECT_HTTPS_ALL
 export HAPROXY_MAINTENANCE_PAGE
 
-export DOTCMS_BACKEND_SERVERS=$(cat /srv/config/backend_members.txt |awk -vORS=, '{ print $1 }' | sed 's/,$//' )
+export CMS_BACKEND_SERVERS=$(cat /srv/config/backend_members.txt |awk -vORS=, '{ print $1 }' | sed 's/,$//' )
 
 cat /srv/config/backend_members.txt
 

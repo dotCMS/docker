@@ -17,8 +17,8 @@ else
     HAPROXY_TLS_ENABLE=false
 fi
 
-export DOTCMS_PORT_HTTP
-export DOTCMS_PORT_HTTPS
+export CMS_PORT_HTTP
+export CMS_PORT_HTTPS
 export HAPROXY_TLS_ENABLE
 export HAPROXY_ADMIN_PASSWORD
 export HAPROXY_REDIRECT_HTTPS_ALL
@@ -29,7 +29,7 @@ while kill -s 0 $(cat /srv/pidfile) 2>/dev/null; do
 
     hash_orig=$(cat /srv/config/backend_members.txt |sort -u |md5sum |cut -f 1 -d ' ')
 
-    server_count=$(discoverBackends "${DOTCMS_SERVICE_NAMES}")
+    server_count=$(discoverBackends "${CMS_DNSNAMES}")
 
     hash_new=$(cat /srv/config/backend_members.txt |sort -u |md5sum |cut -f 1 -d ' ')
 
@@ -37,7 +37,7 @@ while kill -s 0 $(cat /srv/pidfile) 2>/dev/null; do
         echo "BACKEND MEMBERS CHANGED: ${server_count} members"
         cat /srv/config/backend_members.txt
 
-        export DOTCMS_BACKEND_SERVERS=$(cat /srv/config/backend_members.txt |awk -vORS=, '{ print $1 }' | sed 's/,$//' )
+        export CMS_BACKEND_SERVERS=$(cat /srv/config/backend_members.txt |awk -vORS=, '{ print $1 }' | sed 's/,$//' )
 
         dockerize -template /srv/docker-container/templates/haproxy-backend-http.cfg.tmpl:/srv/config/haproxy-backend-http.cfg
         dockerize -template /srv/docker-container/templates/haproxy-backend-https.cfg.tmpl:/srv/config/haproxy-backend-https.cfg

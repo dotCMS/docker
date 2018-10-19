@@ -22,9 +22,9 @@ set -e
 
 
 # IP or hostname of dotCMS service (should be multi-valued RR DNS record). 
-: ${DOTCMS_SERVICE_NAMES:='dotcms'}
-: ${DOTCMS_PORT_HTTP:='8081'}
-: ${DOTCMS_PORT_HTTPS:='8082'}
+: ${CMS_DNSNAMES:='dotcms'}
+: ${CMS_PORT_HTTP:='8081'}
+: ${CMS_PORT_HTTPS:='8082'}
 
 # Path to HAproxy certificate(s). Cert file format must be concatenated subject cert + intermediates cert(s) + private key.
 : ${HAPROXY_CERT_PATH:=''}
