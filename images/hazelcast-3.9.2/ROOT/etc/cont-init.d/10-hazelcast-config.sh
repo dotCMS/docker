@@ -19,9 +19,9 @@ count=$(( ${PROVIDER_HAZELCAST_SVC_DELAY_MIN} + RANDOM % ${PROVIDER_HAZELCAST_SV
 echo "Trying discovery for ~${count} seconds"
 while [[ $count -ge ${PROVIDER_HAZELCAST_SVC_DELAY_MIN} ]]; do
 
-    [[ -n "${PROVIDER_HAZELCAST_BIND_ADDR}" ]] || PROVIDER_HAZELCAST_BIND_ADDR=$( getRouteAddrToService "${PROVIDER_HAZELCAST_DNSNAME}" )
+    [[ -n "${PROVIDER_HAZELCAST_BIND_ADDR}" ]] || PROVIDER_HAZELCAST_BIND_ADDR=$( getRouteAddrToService "${PROVIDER_HAZELCAST_DNSNAMES}" )
 
-    hz_candidate_ip_list=$( getServiceIpAddresses "${PROVIDER_HAZELCAST_DNSNAME}" $( getMyIpAddresses $( getMyNetworkInterfaces ) ) )
+    hz_candidate_ip_list=$( getServiceIpAddresses "${PROVIDER_HAZELCAST_DNSNAMES}" $( getMyIpAddresses $( getMyNetworkInterfaces ) ) )
     hz_candidate_ips=()
     IFS=',' read -ra hz_candidate_ips <<< "${hz_candidate_ip_list}" && unset IFS
 
