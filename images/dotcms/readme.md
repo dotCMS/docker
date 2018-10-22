@@ -34,7 +34,7 @@ docker run -it -p 8080:8080 test
 
 ### RELEASE Example ###
 ```
-docker build --build-arg BUILD_FROM=RELEASE --build-arg BUILD_ID=4.3.2 -t test .
+docker build --build-arg BUILD_FROM=RELEASE --build-arg BUILD_ID=5.0.2 -t test .
 
 docker run -it -p 8080:8080 test
 ```
