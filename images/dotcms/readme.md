@@ -40,9 +40,12 @@ docker run -it -p 8080:8080 test
 ```
 
 ### BRANCH Example 
-Where your branch name is `pre-release-5.0.3`
+Where your branch name is `pre-release-5.0.3`.  In this case, becuase a branch is a movable pointer, you need to prune your
+images before building in order to purge your image cache and get a clean build.
 ```
-docker build --build-arg BUILD_FROM=COMMIT --build-arg BUILD_ID=origin/pre-release-5.0.3 -t test .`
+docker image prune
+
+docker build --build-arg BUILD_FROM=COMMIT --build-arg BUILD_ID=origin/pre-release-5.0.3 -t test .
 
 docker run -it -p 8080:8080 test
 ```
