@@ -6,8 +6,10 @@ For this configuration to work properly, you need to have a valid license pack m
 ```#- [serverpath]/license.zip:/data/shared/assets/license.zip```
 
 with a line like:
-```- ./license.zip:/data/shared/assets/license.zip
-``` where the path before the colon points to the license pack on the host filesystem.
+```
+- ./license.zip:/data/shared/assets/license.zip
+```
+where the path before the colon points to the license pack on the host filesystem.
 
 ## docker-compose
 ### startup
