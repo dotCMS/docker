@@ -20,7 +20,7 @@ where the path before the colon points to the license pack on the host filesyste
 4. Now you can access dotCMS via http://localhost/ (or by other relevant IP or DNS entry)
 
 ### cleanup
-1.  In terminal window where docker-compose was run, hit '''<ctrl - C>'''  This will causing the docker services to stop. 
+1.  In terminal window where docker-compose was run, hit ```<ctrl - C>```  This will causing the docker services to stop. 
 2. To ensure the networks are stopped and all containers have been stopped cleanly, run ```docker-compose down```
 3. These commands will stop all containers and docker networks that were started; however, the data has been persisted in named volumes.
 4. The command ```docker volume ls``` will list all of the docker volumes.  If you wish to remove volumes, you can use the ```docker volume rm ... ``` syntax.
