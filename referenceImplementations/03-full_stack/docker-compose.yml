@@ -18,7 +18,7 @@ volumes:
 
 services:
   http:
-    image: dotcms/haproxy:1.8-alpha
+    image: dotcms/haproxy:latest
     environment:
       "HAPROXY_CERT_PATH": '/certs/'
 #      "HAPROXY_REDIRECT_HTTPS_ALL": 'true'
@@ -35,7 +35,7 @@ services:
       - http_net
 
   hazelcast:
-    image: dotcms/hazelcast:3.9.2-alpha
+    image: dotcms/hazelcast:latest
     environment:
       "PROVIDER_HAZELCAST_DNSNAMES": 'hazelcast'
       "PROVIDER_HAZELCAST_HEAP_MIN": '128m'
@@ -51,14 +51,14 @@ services:
   # will need to purchase a license from Hazelcast.
   # https://docs.hazelcast.org/docs/latest-development/manual/html/License_Questions.html
   hazelcast-mancenter:
-    image: dotcms/hazelcast-mancenter:3.9.2-alpha
+    image: dotcms/hazelcast-mancenter:latest
     ports:
       - "8080:8080"
     networks:
       - hz_net
 
   elasticsearch-static:
-    image: dotcms/elasticsearch:6.1.3-alpha
+    image: dotcms/elasticsearch:latest
     ports:
       - "9200:9200"
     environment:
@@ -73,7 +73,7 @@ services:
       - es_net
 
   elasticsearch:
-    image: dotcms/elasticsearch:6.1.3-alpha
+    image: dotcms/elasticsearch:latest
     depends_on:
       - elasticsearch-static
     environment:
@@ -85,7 +85,7 @@ services:
       - es_net
 
   dotcms:
-    image: dotcms/dotcms:5.0.2-alpha
+    image: dotcms/dotcms:latest
     environment:
       "CMS_HEAP_SIZE": '2g'
       "CMS_JAVA_OPTS": '-XX:+PrintFlagsFinal'
@@ -108,7 +108,7 @@ services:
       - hz_net
 
   db:
-    image: dotcms/postgres:9.6-alpha
+    image: dotcms/postgres:latest
     volumes:
       - dbdata:/data/pg
     networks:

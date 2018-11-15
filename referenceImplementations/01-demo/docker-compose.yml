@@ -10,7 +10,7 @@ volumes:
 services:
 
   dotcms:
-    image: dotcms/dotcms:5.0.2-alpha
+    image: dotcms/dotcms:latest
     ports:
       - "8080:8080"
     environment:
@@ -28,7 +28,7 @@ services:
       - db_net
 
   db:
-    image: dotcms/postgres:9.6-alpha
+    image: dotcms/postgres:latest
     volumes:
       - dbdata:/data/pg
     networks:
