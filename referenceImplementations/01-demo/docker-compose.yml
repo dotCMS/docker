@@ -1,0 +1,35 @@
+version: '3.5'
+
+networks:
+  db_net:
+
+volumes:
+  cms-shared:
+  cms-local:
+  dbdata:
+services:
+
+  dotcms:
+    image: dotcms/dotcms:5.0.2-alpha
+    ports:
+      - "8080:8080"
+    environment:
+      "CMS_HEAP_SIZE": '1g'
+      "CMS_JAVA_OPTS": '-XX:+PrintFlagsFinal'
+      "PROVIDER_DB_DNSNAME": 'db'
+    depends_on:
+      - db
+    volumes:
+      - cms-shared:/data/shared
+      - cms-local:/data/local
+      #- [serverpath]/license.dat:/data/local/dotsecure/license/license.dat
+      #- [serverpath]/license.zip:/data/shared/assets/license.zip
+    networks:
+      - db_net
+
+  db:
+    image: dotcms/postgres:9.6-alpha
+    volumes:
+      - dbdata:/data/pg
+    networks:
+      - db_net

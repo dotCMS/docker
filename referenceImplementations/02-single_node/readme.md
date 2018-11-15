@@ -1,6 +1,7 @@
-# Full Stack Reference Implementation
+# Single Node Reference Implementation
 
-This reference implementation demonstrates how all of the dotCMS provided containers can be configured to function together.  These containers can be run on single or multiple Docker nodes.
+This reference implementation demonstrates how the dotCMS provided containers can be configured to function together on a single host node.  This configuration uses internal
+caching only (no external hazelcast node) and a single external ElasticSearch node.
 
 For this configuration to work properly, you need to have a valid license pack mounted into the dotCMS image.  You can do that by replacing this line: 
 ```#- [serverpath]/license.zip:/data/shared/assets/license.zip```
@@ -11,10 +12,8 @@ with a line like:
 ```
 where the path before the colon points to the license pack on the host filesystem.
 
-If you are planning on running this complete stack on a single docker host, you must have at
-least 6GB of RAM dedicated to Docker for all of the containers to run.  If you are running
-this stack for a production system, normal capacity planning is needed to determine the
-amount of resources needed to effeciently handle system load.
+You should have at least 5GB of RAM dedicated to Docker for all of the containers to run.
+If you are running this stack for a production system, normal capacity planning is needed to determine the amount of resources needed to effeciently handle system load.
 
 ## docker-compose
 ### startup
@@ -29,7 +28,3 @@ amount of resources needed to effeciently handle system load.
 2. To ensure the networks are stopped and all containers have been stopped cleanly, run ```docker-compose down```
 3. These commands will stop all containers and docker networks that were started; however, the data has been persisted in named volumes.
 4. The command ```docker volume ls``` will list all of the docker volumes.  If you wish to remove volumes, you can use the ```docker volume rm ... ``` syntax.
-
-## kubernetes
-For a complete kubernetes example, please refer to demo located here:  [https://github.com/brentgriffin/2018BootcampK8sDemo](https://github.com/brentgriffin/2018BootcampK8sDemo)
-
