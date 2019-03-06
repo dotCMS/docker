@@ -38,25 +38,11 @@ RUN mkdir /tmp/discovery-file-${ES_PLUGIN_discovery_file_VERSION} \
 ## Begin target image build
 ##
 
-# OpenJDK distributed under GPLv2+Oracle Classpath Exception license (http://openjdk.java.net/legal/gplv2+ce.html)
-# Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
+
 FROM alpine:3.8
 
-# A few reasons for installing distribution-provided OpenJDK:
-#
-#  1. Oracle.  Licensing prevents us from redistributing the official JDK.
-#
-#  2. Compiling OpenJDK also requires the JDK to be installed, and it gets
-#     really hairy.
-#
-#     For some sample build times, see Debian's buildd logs:
-#       https://buildd.debian.org/status/logs.php?pkg=openjdk-8
-
-# Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
 
-# add a simple script that can auto-detect the appropriate JAVA_HOME value
-# based on whether the JDK or only the JRE is installed
 RUN { \
 		echo '#!/bin/sh'; \
 		echo 'set -e'; \
@@ -75,10 +61,6 @@ RUN set -x \
 		openjdk8="$JAVA_ALPINE_VERSION" \
 	&& [ "$JAVA_HOME" = "$(docker-java-home)" ]
 
-# If you're reading this and have any feedback on how this image could be
-# improved, please open an issue or a pull request so we can discuss it!
-#
-#   https://github.com/docker-library/openjdk/issues
 
 WORKDIR /srv
 
