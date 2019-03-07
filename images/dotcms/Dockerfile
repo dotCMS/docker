@@ -51,7 +51,7 @@ RUN apk --no-cache upgrade \
 RUN apk --no-cache add libc6-compat tomcat-native && apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ 
 
 # This is a nasty hack for libjsass, Alpine 3.9 no longer has a deprecated symlink in /lib
-RUN ln -s $(readlink /lib64/ld-linux-x86-64.so.2) /lib/ld-linux-x86-64.so.2
+RUN [ ! -e /lib/ld-linux-x86-64.so.2 ] &&  ln -s $(readlink /lib64/ld-linux-x86-64.so.2) /lib/ld-linux-x86-64.so.2
 
 # S6 overlay and components distributed under ISC license (https://github.com/just-containers/s6-overlay/blob/master/LICENSE.md)
 ENV S6_OVERLAY_VERSION v1.21.4.0
