@@ -15,8 +15,8 @@ WORKDIR /srv
 
 # dotCMS core distributed under GPLv3 license (https://github.com/dotCMS/core/blob/master/license.txt)
 RUN cd /build/src/core && git fetch && git reset --hard ${COMMIT}
-RUN cd /build/src/core/dotCMS && ./gradlew --no-daemon createDist
-RUN mkdir -p /srv && cd /build/src/core/dist-output && tar -zxvf *.tar.gz -C /srv
+RUN cd /build/src/core/dotCMS && ./gradlew --no-daemon createDistPrep
+RUN mkdir -p /srv && mv /build/src/core/dist/* /srv/
 
 
 # Add Elasticsearch File-Based Discovery Plugin (https://www.elastic.co/guide/en/elasticsearch/plugins/6.1/discovery-file.html)
@@ -70,6 +70,7 @@ RUN wget --quiet https://github.com/jwilder/dockerize/releases/download/$DOCKERI
 
 
 COPY --from=build-cms /srv/ /srv/
+RUN find /srv/dotserver  -name "*.sh" -exec chmod 500 {} \;
 COPY ROOT/ /
 RUN mkdir -p /srv/docker-container/utils /srv/docker-container/templates /srv/docker-container/config
 RUN chmod 500 /srv/init.sh && find /etc/cont-init.d/ /etc/fix-attrs.d/ /srv/docker-container/utils/ -type f -name "*.sh" -exec chmod 500 {} \;
