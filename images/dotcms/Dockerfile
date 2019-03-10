@@ -1,6 +1,6 @@
 # OpenJDK distributed under GPLv2+Oracle Classpath Exception license (http://openjdk.java.net/legal/gplv2+ce.html)
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
-FROM dotcms/dotcms-src as build-cms
+FROM dotcms/dotcms-seed as build-cms
 
 LABEL com.dotcms.contact "support@dotcms.com"
 LABEL com.dotcms.vendor "dotCMS LLC"
@@ -95,6 +95,6 @@ EXPOSE 8082
 EXPOSE 8000
 # Glowroot profiler - must be configured via CMS_JAVA_OPTS
 EXPOSE 4000
-EXPOSE 4001
+
 ENTRYPOINT ["/init"]
 CMD ["dotcms"]
