@@ -1,6 +1,6 @@
 # DOTCMS SEED
 
-This image contains a clone of the git repo and the gradle dependices from the time this image was created.  It is intended to act as a build seed when building dotcms images.
+This image contains a clone of the git repo and the gradle dependices from the time this image was created.  It is intended to act as the build seed when building dotcms images, so these dependices do not need to be downloaded with every build
 
 ## How to update
 ```
