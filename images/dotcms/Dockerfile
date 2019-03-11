@@ -8,8 +8,6 @@ LABEL com.dotcms.description "dotCMS Content Management System"
 
 ARG COMMIT=HEAD
 
-#  Value resolved in the context of $BUILD_FROM
-ARG BUILD_ID      
 
 WORKDIR /srv
 
