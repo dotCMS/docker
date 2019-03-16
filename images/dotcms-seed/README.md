@@ -4,7 +4,7 @@ This image contains the source files of dotCMS.  It consists of a clone of the d
 
 ## How to update
 ```
-docker build --no-cache -t dotcms-seed .
+docker build --pull --no-cache -t dotcms-seed .
 docker login
 docker tag dotcms-seed dotcms/dotcms-seed:latest
 docker push dotcms/dotcms-seed

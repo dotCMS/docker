@@ -16,7 +16,5 @@ RUN apk update && apk --no-cache add bash grep openssl git nodejs-current nodejs
 
 RUN mkdir -p /build/src \
     && echo "Pulling dotCMS src" \
-    && cd /build/src && git clone https://github.com/dotCMS/core.git core \
-    && cd /build/src/core/ && git checkout issue-16195-createDistPrep \
-    && cd /build/src/core/dotCMS && ./gradlew  --no-daemon  downloadDependencies \
-
+    && cd /build/src && git clone https://github.com/dotCMS/core.git core 
+RUN cd /build/src/core/dotCMS && ./gradlew  --no-daemon  downloadDependencies 

@@ -1,18 +1,20 @@
 # OpenJDK distributed under GPLv2+Oracle Classpath Exception license (http://openjdk.java.net/legal/gplv2+ce.html)
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
 FROM dotcms/dotcms-seed as build-cms
+ARG COMMIT=HEAD
+
 
 LABEL com.dotcms.contact "support@dotcms.com"
 LABEL com.dotcms.vendor "dotCMS LLC"
-LABEL com.dotcms.description "dotCMS Content Management System"
+LABEL com.dotcms.description "dotCMS Content Management System ${COMMIT}"
 
-ARG COMMIT=HEAD
+
 
 
 WORKDIR /srv
 
 # dotCMS core distributed under GPLv3 license (https://github.com/dotCMS/core/blob/master/license.txt)
-RUN cd /build/src/core && git fetch && git reset --hard ${COMMIT}
+RUN cd /build/src/core && git pull && git checkout ${COMMIT}
 RUN cd /build/src/core/dotCMS && ./gradlew --no-daemon createDistPrep
 RUN mkdir -p /srv && mv /build/src/core/dist/* /srv/
 
@@ -49,7 +51,7 @@ RUN apk --no-cache upgrade \
 RUN apk --no-cache add libc6-compat tomcat-native && apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ 
 
 # This is a nasty hack for libjsass, Alpine 3.9 no longer has a deprecated symlink in /lib
-RUN ln -sf $(readlink /lib64/ld-linux-x86-64.so.2) /lib/ld-linux-x86-64.so.2
+RUN [ ! -e /lib/ld-linux-x86-64.so.2 ] &&  ln -s $(readlink /lib64/ld-linux-x86-64.so.2) /lib/ld-linux-x86-64.so.2 || :
 
 # S6 overlay and components distributed under ISC license (https://github.com/just-containers/s6-overlay/blob/master/LICENSE.md)
 ENV S6_OVERLAY_VERSION v1.21.4.0
