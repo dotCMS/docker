@@ -24,14 +24,14 @@ build_by_commit() {
     mkdir -p /build/src && cd /build/src
 
     echo "Building from source commit: $1"
+    cd /build/src/core
+    git clean -f -d 
+    git pull
+    git checkout "$1"
 
-    git clone https://github.com/dotCMS/core.git core && cd core
-    git reset --hard "$1"
-
-    cd dotCMS && ./gradlew createDist
-    build_tarball=$(realpath $(find ../dist-output/ -type f -name dotcms*.tar.gz ))
-
-    tar xzf "${build_tarball}" -C "${build_target_dir}"
+    cd dotCMS && ./gradlew createDistPrep
+    find ../dist/  -name "*.sh" -exec chmod 500 {} \;
+    mv ../dist/* "${build_target_dir}"
 }
 
 set_tomcat_dir() {

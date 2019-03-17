@@ -1,28 +1,27 @@
 # OpenJDK distributed under GPLv2+Oracle Classpath Exception license (http://openjdk.java.net/legal/gplv2+ce.html)
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
-FROM dotcms/dotcms-seed as build-cms
-ARG COMMIT=HEAD
-
+FROM dotcms/dotcms-seed as build-cms 
 
 LABEL com.dotcms.contact "support@dotcms.com"
 LABEL com.dotcms.vendor "dotCMS LLC"
-LABEL com.dotcms.description "dotCMS Content Management System ${COMMIT}"
+LABEL com.dotcms.description "dotCMS Content Management System"
 
+#  One of ["TARBALL_URL", "RELEASE", "NIGHTLY", "COMMIT", "TAG" ]
+ARG BUILD_FROM=COMMIT
 
-
+#  Value resolved in the context of $BUILD_FROM
+ARG BUILD_ID      
 
 WORKDIR /srv
 
-# dotCMS core distributed under GPLv3 license (https://github.com/dotCMS/core/blob/master/license.txt)
-RUN cd /build/src/core && git pull && git checkout ${COMMIT}
-RUN cd /build/src/core/dotCMS && ./gradlew --no-daemon createDistPrep
-RUN mkdir -p /srv && mv /build/src/core/dist/* /srv/
+# Build env dependencies
+RUN apk update && apk --no-cache add bash grep openssl git nodejs-current nodejs-current-dev sed
 
+# dotCMS core distributed under GPLv3 license (https://github.com/dotCMS/core/blob/master/license.txt)
+COPY build-src/ /build/
+RUN chmod 500 /build/build_dotcms.sh && /build/build_dotcms.sh ${BUILD_FROM} ${BUILD_ID} 
 
 # Add Elasticsearch File-Based Discovery Plugin (https://www.elastic.co/guide/en/elasticsearch/plugins/6.1/discovery-file.html)
-COPY build-src/ /build/
-RUN echo `find /srv -type d -name "tomcat-*" -exec echo {} \; | grep -oP "(?<=tomcat-)[0-9]{1}\.[0-9]{1}\.[0-9]+$"` >> /srv/TOMCAT_VERSION
-RUN cd /srv && ls -la
 ENV ES_PLUGIN_discovery_file_VERSION 6.1.3
 RUN mkdir /tmp/discovery-file-${ES_PLUGIN_discovery_file_VERSION} \
     && unzip /build/elasticsearch-plugins/discovery-file-${ES_PLUGIN_discovery_file_VERSION}.zip -d /tmp/discovery-file-${ES_PLUGIN_discovery_file_VERSION} \
@@ -32,6 +31,7 @@ RUN mkdir /tmp/discovery-file-${ES_PLUGIN_discovery_file_VERSION} \
       /srv/dotserver/tomcat-$(cat /srv/TOMCAT_VERSION)/webapps/ROOT/WEB-INF/elasticsearch/plugins/discovery-file-${ES_PLUGIN_discovery_file_VERSION} \
     && mkdir -p /srv/dotserver/tomcat-$(cat /srv/TOMCAT_VERSION)/webapps/ROOT/WEB-INF/elasticsearch/config/discovery-file \
     && touch /srv/dotserver/tomcat-$(cat /srv/TOMCAT_VERSION)/webapps/ROOT/WEB-INF/elasticsearch/config/discovery-file/unicast_hosts.txt
+
 
 
 ##
@@ -45,7 +45,7 @@ FROM openjdk:8-jdk-alpine
 WORKDIR /srv
 
 RUN apk --no-cache upgrade \
-    && apk add --no-cache bash openssl ca-certificates gnupg grep sed s6-dns \
+    && apk add --no-cache bash openssl nss ca-certificates gnupg grep sed s6-dns \
     && update-ca-certificates
 
 RUN apk --no-cache add libc6-compat tomcat-native && apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ 
@@ -70,7 +70,6 @@ RUN wget --quiet https://github.com/jwilder/dockerize/releases/download/$DOCKERI
 
 
 COPY --from=build-cms /srv/ /srv/
-RUN find /srv/dotserver  -name "*.sh" -exec chmod 500 {} \;
 COPY ROOT/ /
 RUN mkdir -p /srv/docker-container/utils /srv/docker-container/templates /srv/docker-container/config
 RUN chmod 500 /srv/init.sh && find /etc/cont-init.d/ /etc/fix-attrs.d/ /srv/docker-container/utils/ -type f -name "*.sh" -exec chmod 500 {} \;

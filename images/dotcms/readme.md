@@ -27,14 +27,14 @@ If you feel you must create your own custom docker image(s), please contact dotC
 
 ### TARBALL_URL Example 
 ```
-docker build --build-arg BUILD_FROM=TARBALL_URL --build-arg BUILD_ID=https://dotcms.com/contentAsset/raw-data/523ef132-4a0b-4f17-9d82-eb2cfec779c6/targz/dotcms-2018-03-09_22-10.tar.gz -t test .
+docker build --pull --no-cache --build-arg BUILD_FROM=TARBALL_URL --build-arg BUILD_ID=https://dotcms.com/contentAsset/raw-data/523ef132-4a0b-4f17-9d82-eb2cfec779c6/targz/dotcms-2018-03-09_22-10.tar.gz -t test .
 
 docker run -it -p 8080:8080 test
 ```
 
 ### RELEASE Example 
 ```
-docker build --build-arg BUILD_FROM=RELEASE --build-arg BUILD_ID=5.0.2 -t test .
+docker build --pull --no-cache --build-arg BUILD_FROM=RELEASE --build-arg BUILD_ID=5.0.2 -t test .
 
 docker run -it -p 8080:8080 test
 ```
@@ -43,9 +43,7 @@ docker run -it -p 8080:8080 test
 Where your branch name is `pre-release-5.0.3`.  In this case, becuase a branch is a movable pointer, you need to prune your
 images before building in order to purge your image cache and get a clean build.
 ```
-docker image prune
-
-docker build --build-arg BUILD_FROM=COMMIT --build-arg BUILD_ID=origin/pre-release-5.0.3 -t test .
+docker build --pull --no-cache --build-arg BUILD_FROM=COMMIT --build-arg BUILD_ID=origin/pre-release-5.0.3 -t test .
 
 docker run -it -p 8080:8080 test
 ```
@@ -53,14 +51,14 @@ docker run -it -p 8080:8080 test
 
 ### COMMIT Example 
 ```
-docker build --build-arg BUILD_FROM=COMMIT --build-arg BUILD_ID=c4e97b3 -t test .
+docker build --pull --no-cache --build-arg BUILD_FROM=COMMIT --build-arg BUILD_ID=c4e97b3 -t test .
 
 docker run -it -p 8080:8080 test
 ```
 
 ### TAG Example 
 ```
-docker build --build-arg BUILD_FROM=TAG --build-arg BUILD_ID=4.2.3-beta -t test .
+docker build --pull --no-cache --build-arg BUILD_FROM=TAG --build-arg BUILD_ID=4.2.3-beta -t test .
 
 docker run -it -p 8080:8080 test
 ```
