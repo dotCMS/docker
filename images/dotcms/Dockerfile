@@ -10,7 +10,7 @@ LABEL com.dotcms.description "dotCMS Content Management System"
 ARG BUILD_FROM=COMMIT
 
 #  Value resolved in the context of $BUILD_FROM
-ARG BUILD_ID      
+ARG BUILD_ID=HEAD      
 
 WORKDIR /srv
 
