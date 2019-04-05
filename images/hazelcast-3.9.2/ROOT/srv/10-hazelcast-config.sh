@@ -2,10 +2,8 @@
 
 set -e
 
-source /srv/container-utils/discovery-include.sh
-source /srv/container-utils/config-defaults.sh
-
-echo "/srv/hazelcast.xml" >>/srv/templatable-config.txt
+source /srv/utils/discovery-include.sh
+source /srv/utils/config-defaults.sh
 
 if [[ -n "${PROVIDER_HAZELCAST_MANCENTER_URL}" ]]; then
     PROVIDER_HAZELCAST_MANCENTER_ENABLED="true"
