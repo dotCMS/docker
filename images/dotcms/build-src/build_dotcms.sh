@@ -25,11 +25,10 @@ build_by_commit() {
 
     cd /build/src/core
     git clean -f -d 
-    git remote update
-    git fetch
+    git pull
     
     echo "Checking out commit/tag/branch: $1"
-    git checkout -tb $1
+    git checkout $1
 
     cd dotCMS && ./gradlew createDistPrep
     find ../dist/  -name "*.sh" -exec chmod 500 {} \;
