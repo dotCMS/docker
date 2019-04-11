@@ -1,11 +1,6 @@
-#!/usr/bin/with-contenv /bin/bash
+#!/bin/bash
 
 set -e
-
-source /srv/docker-container/utils/discovery-include.sh
-source /srv/docker-container/utils/config-defaults.sh
-
-source /srv/docker-container/utils/haproxy-discover.sh
 
 sleep ${HAPROXY_SERVICE_DELAY_MIN}
 
@@ -26,6 +21,7 @@ while [[ $count -le ${HAPROXY_SERVICE_DELAY_MAX} ]]; do
 
 done
 
+echo "Initial discovery completed"
 if [[  ${#server_count[@]} -eq 0 ]]; then
     echo "No backend servers found after ${HAPROXY_SERVICE_DELAY_MAX} seconds, continuing with background discovery"
 fi
@@ -47,7 +43,7 @@ export CMS_BACKEND_SERVERS=$(cat /srv/config/backend_members.txt |awk -vORS=, '{
 
 cat /srv/config/backend_members.txt
 
-dockerize -template /srv/docker-container/templates/haproxy.cfg.tmpl:/srv/config/haproxy.cfg
-dockerize -template /srv/docker-container/templates/haproxy-backend-http.cfg.tmpl:/srv/config/haproxy-backend-http.cfg
-dockerize -template /srv/docker-container/templates/haproxy-backend-https.cfg.tmpl:/srv/config/haproxy-backend-https.cfg
+dockerize -template /srv/templates/haproxy.cfg.tmpl:/srv/config/haproxy.cfg
+dockerize -template /srv/templates/haproxy-backend-http.cfg.tmpl:/srv/config/haproxy-backend-http.cfg
+dockerize -template /srv/templates/haproxy-backend-https.cfg.tmpl:/srv/config/haproxy-backend-https.cfg
 
