@@ -2,9 +2,6 @@
 
 set -e
 
-source /srv/docker-container/utils/discovery-include.sh
-
-
 discoverBackends() {
 
     candidate_ip_list=$( getServiceIpAddresses "$1" )
