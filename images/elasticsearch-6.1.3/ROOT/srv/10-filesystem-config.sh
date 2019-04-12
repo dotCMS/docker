@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv /bin/bash
+#!/bin/bash
 
 set -e
 
@@ -7,10 +7,10 @@ for path in \
     /logs \
 ; do
     [[ ! -d "${path}" ]] && mkdir -p "${path}"
-    chown -R elasticsearch:elasticsearch "$path"
+    #chown -R elasticsearch:elasticsearch "$path"
 done
 
 cd /srv
 
-chgrp -R elasticsearch ./config
+#chgrp -R elasticsearch ./config
 

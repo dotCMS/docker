@@ -1,9 +1,9 @@
-#!/usr/bin/with-contenv /bin/bash
+#!/bin/bash
 
 set -e
 
-source /srv/container-utils/discovery-include.sh
-source /srv/container-utils/config-defaults.sh
+source /srv/utils/discovery-include.sh
+source /srv/utils/config-defaults.sh
 
 
 sleep ${PROVIDER_ELASTICSEARCH_SVC_DELAY_MIN}
@@ -71,4 +71,4 @@ export PROVIDER_ELASTICSEARCH_ENABLE_HTTP
 export PROVIDER_ELASTICSEARCH_NODE_MASTER
 export PROVIDER_ELASTICSEARCH_NODE_DATA
 
-dockerize -template /srv/config/elasticsearch.yml:/srv/config/elasticsearch.yml
+dockerize -template /srv/templates/elasticsearch.yml.tmpl:/srv/config/elasticsearch.yml

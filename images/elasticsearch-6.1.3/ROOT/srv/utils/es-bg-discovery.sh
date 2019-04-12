@@ -1,21 +1,21 @@
-#!/usr/bin/with-contenv /bin/bash
+#!/bin/bash
 
 set -e
 
-source /srv/container-utils/discovery-include.sh
-source /srv/container-utils/config-defaults.sh
+source /srv/utils/discovery-include.sh
+source /srv/utils/config-defaults.sh
 
 sleep $PROVIDER_ELASTICSEARCH_SVC_REFRESH
 export PROVIDER_ELASTICSEARCH_PORT_TRANSPORT
 
-while [[ ! -f /srv/run/pid ]]; do
+while [[ ! -f /srv/pid ]]; do
     echo "Elasticsearch background discovery: pidfile not found, waiting ${PROVIDER_ELASTICSEARCH_SVC_REFRESH} seconds..."
     sleep ${PROVIDER_ELASTICSEARCH_SVC_REFRESH}
 done
 
 if [[ -e /srv/INIT_STARTED_ELASTICSEARCH ]]; then
     # Loop as long as Elasticsearch is running
-    while kill -s 0 $(cat /srv/run/pid) 2>/dev/null; do
+    while kill -s 0 $(cat /srv/pid) 2>/dev/null; do
 
         es_candidate_ip_list=$(getServiceIpAddresses "${PROVIDER_ELASTICSEARCH_DNSNAMES}" $( getMyIpAddresses $( getMyNetworkInterfaces ) ) )
         es_candidate_ips=()

@@ -16,6 +16,10 @@ RUN wget -O mancenter.tgz https://download.hazelcast.com/management-center/manag
 ADD docker-entrypoint.sh ./
 RUN chmod +x ./docker-entrypoint.sh ./startManCenter.sh
 
+RUN chmod -R g=u ${MANCENTER_HOME}
+
+USER 10001
+
 # Start hazelcast standalone server.
 ENTRYPOINT ["/sbin/tini", "-g", "--", "./docker-entrypoint.sh"]
 CMD ["mancenter"]

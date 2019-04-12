@@ -2,14 +2,18 @@
 
 set -e
 
+source /srv/config.sh
+
 if [[ "$1" == "elasticsearch" || -z "$1" ]]; then
+
+    #echo "Starting background discovery..."
+    #/srv/utils/es-bg-discovery.sh &
 
     echo "Starting Elasticsearch server..."
     touch /srv/INIT_STARTED_ELASTICSEARCH
 
-    cd /srv && mkdir run && chown elasticsearch:elasticsearch run
-    gosu elasticsearch:elasticsearch \
-        /bin/sh -c 'echo $$ >/srv/run/pid; exec elasticsearch'
+    cd /srv && mkdir run
+    /bin/sh -c 'echo $$ >/srv/pid; exec elasticsearch'
 
 elif [[ "$1" == "showconfig" ]]; then
 
