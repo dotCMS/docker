@@ -2,16 +2,20 @@
 
 set -e
 
-RUNAS_UID=$(grep -oP "dotcms\:x\:\K[[:digit:]]+(?=\:.*$)" /etc/passwd || true)
-[[ -z "$RUNAS_UID" ]] && RUNAS_UID=0
+umask 007 
 
-RUNAS_GID=$(grep -oP "dotcms\:x\:\K[[:digit:]]+(?=\:.*$)" /etc/group || true)
-[[ -z "$RUNAS_GID" ]] && RUNAS_GID=0
-
+source /srv/config.sh
 
 if [[ "${1}" == "dotcms" || -z "${1}" ]]; then
 
-    echo "Starting dotCMS as UID:GID $RUNAS_UID:$RUNAS_GID..."
+    if [[ -z "${PROVIDER_ELASTICSEARCH_DNSNAMES}" ]]; then
+        echo "No external Elasticsearch configured..."
+    else
+        echo "Starting background Elasticsearch discovery..."
+        /srv/utils/es-bg-discovery.sh &
+    fi
+
+    echo "Starting dotCMS ..."
 
     [[ -f /srv/TOMCAT_VERSION ]] && TOMCAT_VERSION=$( cat /srv/TOMCAT_VERSION )
     TOMCAT_HOME=/srv/dotserver/tomcat-${TOMCAT_VERSION}
@@ -28,17 +32,13 @@ if [[ "${1}" == "dotcms" || -z "${1}" ]]; then
 
     DB_CONNECT_TEST="$(cat /srv/DB_CONNECT_TEST | tr -d [:space:])"
     if [[ -n "$DB_CONNECT_TEST" ]]; then
-        /bin/exec -c -- \
-        /bin/s6-envdir -fn -- /var/run/s6/env-dotcms \
-        /bin/exec -- \
+        exec -- \
         /usr/local/bin/dockerize -wait tcp://${DB_CONNECT_TEST} -timeout 60s \
-         /bin/s6-setuidgid $RUNAS_UID:$RUNAS_GID  ${TOMCAT_HOME}/bin/catalina.sh run
+         ${TOMCAT_HOME}/bin/catalina.sh run
     else
-        /bin/exec -c -- \
-        /bin/s6-envdir -fn -- /var/run/s6/env-dotcms \
-        /bin/exec -- \
+        exec -- \
         /usr/local/bin/dockerize \
-         /bin/s6-setuidgid $RUNAS_UID:$RUNAS_GID  ${TOMCAT_HOME}/bin/catalina.sh run
+         ${TOMCAT_HOME}/bin/catalina.sh run
     fi
 
 else

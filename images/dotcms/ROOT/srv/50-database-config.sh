@@ -1,10 +1,11 @@
-#!/usr/bin/with-contenv /bin/bash
+#!/bin/bash
 
 set -e
 
-source /srv/docker-container/utils/config-defaults.sh
+source /srv/utils/config-defaults.sh
 
 
+echo "Database config ...."
 [[ -z "${PROVIDER_DB_DNSNAME}" ]] && PROVIDER_DB_DRIVER="H2"
 
 case "$PROVIDER_DB_DRIVER" in 
@@ -44,14 +45,14 @@ touch /srv/DB_CONNECT_TEST
 [[ "$PROVIDER_DB_DRIVER" != "H2" ]] && echo "${PROVIDER_DB_DNSNAME}:${PROVIDER_DB_PORT}" >/srv/DB_CONNECT_TEST
 chmod 400 /srv/DB_CONNECT_TEST
 
-echo "PROVIDER_DB_DRIVER=${PROVIDER_DB_DRIVER}" >>/srv/docker-container/config/settings.ini
-[[ -n "$PROVIDER_DB_URL" ]] && echo "PROVIDER_DB_URL=${PROVIDER_DB_URL}" >>/srv/docker-container/config/settings.ini
-echo "PROVIDER_DB_DBNAME=${PROVIDER_DB_DBNAME}" >>/srv/docker-container/config/settings.ini
-echo "PROVIDER_DB_DNSNAME=${PROVIDER_DB_DNSNAME}" >>/srv/docker-container/config/settings.ini
-echo "PROVIDER_DB_PORT=${PROVIDER_DB_PORT}" >>/srv/docker-container/config/settings.ini
-echo "PROVIDER_DB_USERNAME=${PROVIDER_DB_USERNAME}" >>/srv/docker-container/config/settings.ini
-echo "PROVIDER_DB_PASSWORD=${PROVIDER_DB_PASSWORD}" >>/srv/docker-container/config/settings.ini
-echo "PROVIDER_DB_MAXCONNS=${PROVIDER_DB_MAXCONNS}" >>/srv/docker-container/config/settings.ini
+echo "PROVIDER_DB_DRIVER=${PROVIDER_DB_DRIVER}" >>/srv/config/settings.ini
+[[ -n "$PROVIDER_DB_URL" ]] && echo "PROVIDER_DB_URL=${PROVIDER_DB_URL}" >>/srv/config/settings.ini
+echo "PROVIDER_DB_DBNAME=${PROVIDER_DB_DBNAME}" >>/srv/config/settings.ini
+echo "PROVIDER_DB_DNSNAME=${PROVIDER_DB_DNSNAME}" >>/srv/config/settings.ini
+echo "PROVIDER_DB_PORT=${PROVIDER_DB_PORT}" >>/srv/config/settings.ini
+echo "PROVIDER_DB_USERNAME=${PROVIDER_DB_USERNAME}" >>/srv/config/settings.ini
+echo "PROVIDER_DB_PASSWORD=${PROVIDER_DB_PASSWORD}" >>/srv/config/settings.ini
+echo "PROVIDER_DB_MAXCONNS=${PROVIDER_DB_MAXCONNS}" >>/srv/config/settings.ini
 
 
 

@@ -1,13 +1,13 @@
-#!/usr/bin/with-contenv /bin/bash
+#!/bin/bash
 
 set -e
 
-source /srv/docker-container/utils/discovery-include.sh
-source /srv/docker-container/utils/config-defaults.sh
+source /srv/utils/discovery-include.sh
+source /srv/utils/config-defaults.sh
 
-
+echo "Merge Docker Config ...."
 # Overwrite Tomcat files
-cd /srv/docker-container/templates/tomcat/OVERRIDE
+cd /srv/templates/tomcat/OVERRIDE
 for OVERRIDEFILE in $(find . -type f); do
     [[ ! -d "${TOMCAT_HOME}/$(dirname $OVERRIDEFILE)" ]] && mkdir -p "${TOMCAT_HOME}/$(dirname $OVERRIDEFILE)"
     cp "$OVERRIDEFILE" "${TOMCAT_HOME}/$OVERRIDEFILE"
@@ -16,12 +16,12 @@ for OVERRIDEFILE in $(find . -type f); do
     #[[ "$(basename $file)" == "hazelcast-client.xml" ]] && cp $file /srv/bin/system/src-conf/
 
     # feed to Dockerize for templating
-    echo "${TOMCAT_HOME}/$OVERRIDEFILE" >>/srv/docker-container/config/templatable.txt
+    echo "${TOMCAT_HOME}/$OVERRIDEFILE" >>/srv/config/templatable.txt
 
 done
 
 # Overwrite dotCMS app files
-cd /srv/docker-container/templates/dotcms/OVERRIDE
+cd /srv/templates/dotcms/OVERRIDE
 for OVERRIDEFILE in $(find . -type f); do
     echo $OVERRIDEFILE
     [[ ! -d "${TOMCAT_HOME}/webapps/ROOT/$(dirname $OVERRIDEFILE)" ]] && mkdir -p "${TOMCAT_HOME}/webapps/ROOT/$(dirname $OVERRIDEFILE)"
@@ -34,13 +34,13 @@ for OVERRIDEFILE in $(find . -type f); do
     cp "$OVERRIDEFILE" "${TOMCAT_HOME}/webapps/ROOT/$OVERRIDEFILE"
 
     # feed to Dockerize for templating
-    echo "${TOMCAT_HOME}/webapps/ROOT/$OVERRIDEFILE" >>/srv/docker-container/config/templatable.txt
+    echo "${TOMCAT_HOME}/webapps/ROOT/$OVERRIDEFILE" >>/srv/config/templatable.txt
 
 done
 
 
 # Merge dotCMS properties diffs
-cd /srv/docker-container/templates/dotcms/CONF
+cd /srv/templates/dotcms/CONF
 for MERGEFILE in $(find . -type f); do
     echo "Merging $MERGEFILE"
     RUNFILE="${TOMCAT_HOME}/webapps/ROOT/WEB-INF/classes/$(basename $MERGEFILE)"
@@ -64,7 +64,7 @@ for MERGEFILE in $(find . -type f); do
     echo -e "${prefile}\n${config_injection}\n\n\n${postfile}" >"$SRCFILE"
 
     # feed to Dockerize for templating
-    echo "$RUNFILE" >>/srv/docker-container/config/templatable.txt
+    echo "$RUNFILE" >>/srv/config/templatable.txt
 
 done
 

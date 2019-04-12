@@ -1,10 +1,10 @@
-#!/usr/bin/with-contenv /bin/bash
+#!/bin/bash
 
 set -e
 
-source /srv/docker-container/utils/config-defaults.sh
+source /srv/utils/config-defaults.sh
 
-
+echo "dotCMS environment ...."
 # Default opts
 JAVA_OPTS="-Djava.awt.headless=true -Xverify:none -Dfile.encoding=UTF8 -server -XX:+DisableExplicitGC"
 # Memory opts
@@ -18,14 +18,3 @@ JAVA_OPTS="$JAVA_OPTS -Dpdfbox.fontcache=/data/local/dotsecure"
 
 # Finally, add user-provided JAVA_OPTS
 JAVA_OPTS="$JAVA_OPTS ${CMS_JAVA_OPTS}"
-
-
-# Setup Java environment to import into restricted runtime env
-envvarlist=( "HOSTNAME" "LANG" "JAVA_HOME" "JAVA_OPTS")
-
-mkdir -p /var/run/s6/env-dotcms
-
-for varname in ${envvarlist[@]}; do
-    echo "  ${varname}=${!varname}"
-    echo -n "${!varname}" >"/var/run/s6/env-dotcms/${varname}"
-done

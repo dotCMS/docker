@@ -1,9 +1,9 @@
-#!/usr/bin/with-contenv /bin/bash
+#!/bin/bash
 
 set -e
 
-source /srv/docker-container/utils/discovery-include.sh
-source /srv/docker-container/utils/config-defaults.sh
+source /srv/utils/discovery-include.sh
+source /srv/utils/config-defaults.sh
 
 es_discovery_filename="/srv/dotserver/tomcat-$(cat /srv/TOMCAT_VERSION)/webapps/ROOT/WEB-INF/elasticsearch/config/discovery-file/unicast_hosts.txt"
 

@@ -1,14 +1,13 @@
-#!/usr/bin/with-contenv /bin/bash
+#!/bin/bash
  
 set -e
 
-source /srv/docker-container/utils/config-defaults.sh
+source /srv/utils/config-defaults.sh
 
 echo "Installing osgi plugins for Tomcat ${TOMCAT_VERSION}"
 if [[ -d /plugins/osgi ]]; then
     echo "Found $(find /plugins/osgi/ -mindepth 1 -maxdepth 1 -name *.jar | wc -l) plugins"
     
-    ## TODO: chown files here, via tmpdir
     cp /plugins/osgi/*.jar /data/shared/felix/load/
 fi
 
