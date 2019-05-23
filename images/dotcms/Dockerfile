@@ -40,15 +40,14 @@ RUN mkdir /tmp/discovery-file-${ES_PLUGIN_discovery_file_VERSION} \
 
 # OpenJDK distributed under GPLv2+Oracle Classpath Exception license (http://openjdk.java.net/legal/gplv2+ce.html)
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
-FROM openjdk:8-jdk-alpine
+FROM debian
 
 WORKDIR /srv
 
-RUN apk --no-cache upgrade \
-    && apk add --no-cache bash openssl nss ca-certificates gnupg grep sed s6-dns \
-    && update-ca-certificates
+RUN apt-get update && apt-get install bash xz-utils openssl ca-certificates gnupg grep sed libtcnative-1 wget vim libsass-dev -y
 
-RUN apk --no-cache add libc6-compat tomcat-native && apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ 
+
+
 
 # This is a nasty hack for libjsass, Alpine 3.9 no longer has a deprecated symlink in /lib
 RUN [ ! -e /lib/ld-linux-x86-64.so.2 ] &&  ln -s $(readlink /lib64/ld-linux-x86-64.so.2) /lib/ld-linux-x86-64.so.2 || :
@@ -67,6 +66,14 @@ ENV DOCKERIZE_VERSION v0.6.0
 RUN wget --quiet https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && tar -xzf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz -C /usr/local/bin \
     && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+
+RUN wget --quiet https://builds.shipilev.net/openjdk-shenandoah-jdk8/openjdk-shenandoah-jdk8-latest-linux-x86_64-release.tar.xz 
+
+RUN unxz openjdk-shenandoah-jdk8-latest-linux-x86_64-release.tar.xz
+
+
+RUN tar -xvf openjdk-shenandoah-jdk8-latest-linux-x86_64-release.tar 
+ENV JAVA_HOME j2sdk-image
 
 
 COPY --from=build-cms /srv/ /srv/
