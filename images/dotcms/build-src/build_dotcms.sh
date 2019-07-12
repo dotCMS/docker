@@ -23,11 +23,12 @@ get_by_url() {
 build_by_commit() {
     mkdir -p /build/src && cd /build/src
 
-    echo "Building from source commit: $1"
     cd /build/src/core
     git clean -f -d 
     git pull
-    git checkout "$1"
+    
+    echo "Checking out commit/tag/branch: $1"
+    git checkout $1
 
     cd dotCMS && ./gradlew createDistPrep
     find ../dist/  -name "*.sh" -exec chmod 500 {} \;
