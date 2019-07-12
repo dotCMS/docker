@@ -49,7 +49,7 @@ case "${build_source}" in
 
     "RELEASE" )
 
-        get_by_url "https://old.dotcms.com/physical_downloads/release_builds/dotcms_${build_id}.tar.gz"
+        get_by_url "http://static.dotcms.com/versions/dotcms_${build_id}.tar.gz"
         ;;
 
     "NIGHTLY" )
