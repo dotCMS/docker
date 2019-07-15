@@ -10,7 +10,7 @@ LABEL com.dotcms.description = "dotCMS Content Management System"
 WORKDIR /srv
 
 # Build env dependencies
-RUN apk update && apk --no-cache add bash grep git nodejs-current nodejs-current-dev sed
+RUN apk update && apk --no-cache add bash grep git nodejs-current nodejs-current-dev sed curl coreutils
 
 # Cloning the repository
 RUN mkdir -p /build/src \
