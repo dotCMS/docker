@@ -69,7 +69,11 @@ services:
       - es_net
 
   db:
-    image: dotcms/postgres:latest
+    image: bitnami/postgresql:9.6
+    environment:
+      "POSTGRESQL_USERNAME": 'dotcmsdbuser'
+      "POSTGRESQL_PASSWORD": 'password'
+      "POSTGRESQL_DATABASE": 'dotcms'
     volumes:
       - dbdata:/data/pg
     networks:
