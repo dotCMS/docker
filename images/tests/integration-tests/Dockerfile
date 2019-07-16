@@ -28,8 +28,11 @@ ENV DB_TYPE_ENV=${DB_TYPE}
 WORKDIR /srv
 
 # dotCMS core distributed under GPLv3 license (https://github.com/dotCMS/core/blob/master/license.txt)
-COPY setup/build-src/build_dotcms.sh /build/build_dotcms.sh
-RUN chmod 500 /build/build_dotcms.sh && /build/build_dotcms.sh ${BUILD_FROM} ${BUILD_ID}
+COPY setup/build-src/checkout.sh /build/checkout.sh
+RUN chmod 500 /build/checkout.sh && /build/checkout.sh ${BUILD_FROM} ${BUILD_ID}
+
+COPY setup/build-src/overrideProperties.sh /build/overrideProperties.sh
+RUN chmod 500 /build/overrideProperties.sh && /build/overrideProperties.sh
 
 COPY setup/build-src/prepareIntegrationTests.sh /build/prepareIntegrationTests.sh
 RUN chmod 500 /build/prepareIntegrationTests.sh && /build/prepareIntegrationTests.sh
@@ -37,8 +40,10 @@ RUN chmod 500 /build/prepareIntegrationTests.sh && /build/prepareIntegrationTest
 COPY setup/build-src/generateLicense.sh /build/generateLicense.sh
 RUN chmod 500 /build/generateLicense.sh && /build/generateLicense.sh
 
-# Copy our custom data to the source code
+# ===========================================
+#  Copy our custom data to the source code  #
 COPY setup/ROOT/ /build/src/core/dotCMS/src/
+# ===========================================
 
 VOLUME /db
 VOLUME /custom/reports
