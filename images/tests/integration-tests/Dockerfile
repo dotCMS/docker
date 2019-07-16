@@ -34,6 +34,9 @@ RUN chmod 500 /build/build_dotcms.sh && /build/build_dotcms.sh ${BUILD_FROM} ${B
 COPY setup/build-src/prepareIntegrationTests.sh /build/prepareIntegrationTests.sh
 RUN chmod 500 /build/prepareIntegrationTests.sh && /build/prepareIntegrationTests.sh
 
+COPY setup/build-src/generateLicense.sh /build/generateLicense.sh
+RUN chmod 500 /build/generateLicense.sh && /build/generateLicense.sh
+
 # Copy our custom data to the source code
 COPY setup/ROOT/ /build/src/core/dotCMS/src/
 
