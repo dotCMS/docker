@@ -291,7 +291,10 @@ items:
         volumes:
         - name: cmsshared
           persistentVolumeClaim:
-            claimName: cms-shared-pvc        
+            claimName: cms-shared-pvc
+        - name: licensefile
+          configMap:
+            name: dotcmslicensepack                    
         containers:
         - name: dotcms
           image: 172.30.1.1:5000/dotcms/dotcms-openshift
@@ -315,6 +318,9 @@ items:
           volumeMounts:
           - name: cmsshared
             mountPath: /data/shared
+          - name: licensefile
+            mountPath: "/data/shared/assets/license.zip"
+            subPath: "license.zip"          
         restartPolicy: Always
 - apiVersion: v1
   kind: Service
@@ -360,6 +366,7 @@ items:
     ports:
     - name: http
       port: 80
+      targetPort: 8080
     - name: https
       port: 443
     type: LoadBalancer
