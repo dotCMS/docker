@@ -10,4 +10,4 @@
 oc apply -f prereq.yaml
 
 # make license pack available
-oc create configmap dotcmslicensepack --from-file=./license.dat
+oc create configmap dotcmslicensepack --from-file=./license.zip
