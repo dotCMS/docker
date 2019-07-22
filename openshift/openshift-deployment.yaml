@@ -317,9 +317,9 @@ items:
             value: hazelcast-svc            
           volumeMounts:
           - name: cmsshared
-            mountPath: /data/shared
+            mountPath: /data/shared/assets
           - name: licensefile
-            mountPath: "/data/shared/assets/license.zip"
+            mountPath: /data/shared/assets/license.zip
             subPath: "license.zip"          
         restartPolicy: Always
 - apiVersion: v1
