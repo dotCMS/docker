@@ -52,6 +52,8 @@ for MERGEFILE in $(find . -type f); do
         sed -ri "s/^(${escaped_varname})\s*=(.*)$/#\1=\2/" "$RUNFILE"
         sed -ri "s/^(${escaped_varname})\s*=(.*)$/#\1=\2/" "$SRCFILE"
     done
+    sed -i 's/\\/\\\\/g' "$RUNFILE"
+    sed -i 's/\\/\\\\/g' "$MERGEFILE"
 
     config_injection=$(<"$MERGEFILE")
 
