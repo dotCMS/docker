@@ -83,7 +83,7 @@ items:
             value: dotcms   
           volumeMounts:
           - name: dbdata
-            mountPath: /data/pg
+            mountPath: /bitnami/postgresql
         restartPolicy: Always
 - apiVersion: v1
   kind: Service
