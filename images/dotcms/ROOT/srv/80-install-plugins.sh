@@ -17,8 +17,9 @@ if [[ -d /plugins/static ]]; then
     mv /srv/plugins/common.xml /tmp/plugins-common.xml
     mv /srv/plugins/plugins.xml /tmp/plugins-plugins.xml
     cp -a /plugins/static/* /srv/plugins/
-    mv /tmp/plugins-common.xml /srv/plugins/common.xml 
-    mv /tmp/plugins-plugins.xml /srv/plugins/plugins.xml 
+    cp /tmp/plugins-common.xml /srv/plugins/common.xml 
+    cp /tmp/plugins-plugins.xml /srv/plugins/plugins.xml 
 
     cd /srv && ./bin/deploy-plugins.sh || exit 1
 fi
+
