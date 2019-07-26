@@ -34,6 +34,17 @@ items:
     resources:
       requests:
         storage: 10Gi
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: dotcmsplugins-pvc
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    storageClassName: ""
+    resources:
+      requests:
+        storage: 500Mi
 - apiVersion: extensions/v1beta1
   kind: Deployment
   metadata:
@@ -275,10 +286,7 @@ items:
   kind: Deployment
   metadata:
     name: dotcms
-    annotations:
-     openshift.io/image.insecureRepository: "true"
   spec:
-    dockerImageRepository: 172.30.1.1:5000/dotcms/dotcms-openshift
     replicas: 1
     selector:
       matchLabels:
@@ -294,7 +302,10 @@ items:
             claimName: cms-shared-pvc
         - name: licensefile
           configMap:
-            name: dotcmslicensepack                    
+            name: dotcmslicensepack
+        - name: plugins
+          persistentVolumeClaim:
+            claimName: dotcmsplugins-pvc
         containers:
         - name: dotcms
           image: dotcms/dotcms:5.1.6-osalpha
@@ -320,7 +331,9 @@ items:
             mountPath: /data/shared/assets
           - name: licensefile
             mountPath: /data/shared/assets/license.zip
-            subPath: "license.zip"          
+            subPath: "license.zip"
+          - name: plugins
+            mountPath: /plugins
         restartPolicy: Always
 - apiVersion: v1
   kind: Service

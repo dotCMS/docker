@@ -1,29 +1,11 @@
-apiVersion: extensions/v1beta1
-kind: DaemonSet
+apiVersion: v1
+kind: PersistentVolume
 metadata:
-  labels:
-    k8s-app: sysctl-conf
-  name: sysctl-conf
+  name: dotcmsplugins
 spec:
-  template:
-    metadata:
-      labels:
-        k8s-app: sysctl-conf
-    spec:
-      containers:
-      - command:
-        - sh
-        - -c
-        - sysctl -w vm.max_map_count=262166 && while true; do sleep 86400; done
-        image: busybox:1.26.2
-        name: sysctl-conf
-        resources:
-          limits:
-            cpu: 10m
-            memory: 50Mi
-          requests:
-            cpu: 10m
-            memory: 50Mi
-        securityContext:
-          privileged: true
-      terminationGracePeriodSeconds: 1
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 500Mi
+  hostPath:
+    path: /shared/plugins
