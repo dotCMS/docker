@@ -22,7 +22,7 @@ items:
     capacity:
       storage: 20Gi
     hostPath:
-      path: /shared/assets
+      path: /shared/dotassets
 - apiVersion: v1
   kind: PersistentVolume
   metadata:
