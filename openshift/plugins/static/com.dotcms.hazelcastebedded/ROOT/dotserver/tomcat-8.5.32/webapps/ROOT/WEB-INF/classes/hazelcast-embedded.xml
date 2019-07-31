@@ -193,6 +193,21 @@
         <max-size>5000</max-size>
         <eviction-policy>LFU</eviction-policy>
     </map>
+
+    <map name="companypool">
+        <max-size>271</max-size>
+        <eviction-policy>LFU</eviction-policy>
+    </map>
+    
+    <map name="csscache">
+        <max-size>2500</max-size>
+        <eviction-policy>LFU</eviction-policy>
+    </map>
+    
+    <map name="fileassetmetadatacache">
+        <max-size>271</max-size>
+        <eviction-policy>LFU</eviction-policy>
+    </map>
     
 
     <multimap name="default">
