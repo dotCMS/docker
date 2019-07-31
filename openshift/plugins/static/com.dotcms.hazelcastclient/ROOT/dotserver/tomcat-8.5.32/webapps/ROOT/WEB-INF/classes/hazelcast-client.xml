@@ -95,10 +95,34 @@
     <metadata-space-percentage>40.5</metadata-space-percentage>
   </native-memory>
 
-   <near-cache name="identifiercache">
-        <max-size>50000</max-size>
-        <eviction-policy>LFU</eviction-policy>
-        <in-memory-format>OBJECT</in-memory-format>
-    </near-cache> 
+  <near-cache name="contentletcache">
+      <max-size>5000</max-size>
+      <eviction-policy>LFU</eviction-policy>
+      <in-memory-format>OBJECT</in-memory-format>
+  </near-cache>
+  
+  <near-cache name="companypool">
+      <max-size>10</max-size>
+      <eviction-policy>LFU</eviction-policy>
+      <in-memory-format>OBJECT</in-memory-format>
+  </near-cache>
+  
+  <near-cache name="csscache">
+      <max-size>2500</max-size>
+      <eviction-policy>LFU</eviction-policy>
+      <in-memory-format>OBJECT</in-memory-format>
+  </near-cache>
+  
+  <near-cache name="fileassetmetadatacache">
+      <max-size>200</max-size>
+      <eviction-policy>LFU</eviction-policy>
+      <in-memory-format>OBJECT</in-memory-format>
+  </near-cache>
+  
+  <near-cache name="identifiercache">
+      <max-size>50000</max-size>
+      <eviction-policy>LFU</eviction-policy>
+      <in-memory-format>OBJECT</in-memory-format>
+  </near-cache> 
 
 </hazelcast-client>
