@@ -65,7 +65,7 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
                prefix="dotcms_access" suffix=".log"
-               pattern="%{org.apache.catalina.AccessLog.RemoteAddr}r %l %u %t %r %H %v%U%q %s %b %{Referer}i %{User-Agent}i" />
+               pattern="%{org.apache.catalina.AccessLog.RemoteAddr}r %a %A %l %u %t %r %H %v%U%q %s %b %{Referer}i %{User-Agent}i" />
  
       </Host>
     </Engine>
