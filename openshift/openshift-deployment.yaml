@@ -329,7 +329,9 @@ items:
           - name: PROVIDER_ELASTICSEARCH_SVC_DELAY_MAX
             value: "60"            
           - name: PROVIDER_HAZELCAST_DNSNAMES
-            value: hazelcast-svc            
+            value: hazelcast-svc 
+          - name: CMS_DNSNAMES
+            value: haproxy-svc              
           volumeMounts:
           - name: assetsvolume
             mountPath: /data/shared/assets
