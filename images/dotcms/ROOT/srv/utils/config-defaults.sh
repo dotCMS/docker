@@ -97,8 +97,13 @@ TOMCAT_HOME=/srv/dotserver/tomcat-${TOMCAT_VERSION}
 # Elasticsearch HTTP server is disabled by default. Set to "true" to enable.
 : ${PROVIDER_ELASTICSEARCH_ENABLE_HTTP:="false"}
 
+## HAProxy config
 
-
+# Default PORT 
+: ${PROVIDER_HAPROXY_PORT_HTTP:="80"}
+: ${PROVIDER_HAPROXY_SVC_DELAY_MIN:="${SERVICE_DELAY_DEFAULT_MIN}"}
+: ${PROVIDER_HAPROXY_SVC_DELAY_STEP:="${SERVICE_DELAY_DEFAULT_STEP}"}
+: ${PROVIDER_HAPROXY_SVC_DELAY_MAX:="${SERVICE_DELAY_DEFAULT_MAX}"}
 
 
 
