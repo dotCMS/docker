@@ -63,9 +63,10 @@
         <!-- Access log processes all example.
              Documentation at: /docs/config/valve.html
              Note: The pattern used is equivalent to using pattern="common" -->
+
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
                prefix="dotcms_access" suffix=".log"
-               pattern="%{org.apache.catalina.AccessLog.RemoteAddr}r %l %u %t %r %H %v%U%q %s %b %{Referer}i %{User-Agent}i" />
+               pattern="%{org.apache.catalina.AccessLog.RemoteAddr}r {{ .Env.CMS_VALVE_IP }} %l %u %t %r %H %v%U%q %s %b %{Referer}i %{User-Agent}i" />
  
       </Host>
     </Engine>

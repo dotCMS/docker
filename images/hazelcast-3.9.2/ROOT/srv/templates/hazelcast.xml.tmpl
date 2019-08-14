@@ -18,7 +18,8 @@
            xmlns="http://www.hazelcast.com/schema/config"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <properties> 
-        <property name="hazelcast.discovery.enabled">false</property>
+        <property name="hazelcast.client.statistics.enabled">true</property>
+        <property name="hazelcast.discovery.enabled">true</property>
         <property name="hazelcast.rest.enabled">true</property>
         <property name="hazelcast.tcp.join.port.try.count">1</property>
         <property name="hazelcast.heartbeat.interval.seconds">1</property>
