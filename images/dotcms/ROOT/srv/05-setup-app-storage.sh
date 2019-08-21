@@ -26,6 +26,4 @@ fi
 [[ ! -d /data/local/dotsecure ]] && mkdir -p /data/local/dotsecure
 [[ ! -d /data/local/felix ]] && mkdir -p /data/local/felix
 
-mkdir /srv/home
-# && chown $CMS_RUNAS_UID:$CMS_RUNAS_GID /srv/home
-
+mkdir -p /srv/home

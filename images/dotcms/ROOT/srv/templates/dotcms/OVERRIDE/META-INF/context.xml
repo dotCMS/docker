@@ -11,7 +11,8 @@
               driverClassName="org.h2.Driver"
               url="{{ with .Env.PROVIDER_DB_URL }}{{ . }}{{ else }}jdbc:h2:WEB-INF/H2_DATABASE/{{ .Env.PROVIDER_DB_DBNAME }};MVCC=TRUE;LOCK_TIMEOUT=15000{{ end }}"
               username="sa" password="sa" maxActive="{{ .Env.PROVIDER_DB_MAXCONNS }}" maxIdle="10" maxWait="60000"
-              removeAbandoned="true" removeAbandonedTimeout="60" logAbandoned="false"
+              removeAbandoned="true" removeAbandonedTimeout="60" logAbandoned="false" 
+              jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ResetAbandonedTimer" 
               timeBetweenEvictionRunsMillis="30000" validationQuery="SELECT 1" testOnBorrow="true" testWhileIdle="true"
               abandonWhenPercentageFull="50"/>
 
@@ -23,7 +24,8 @@
           driverClassName="org.postgresql.Driver"
           url="{{ with .Env.PROVIDER_DB_URL }}{{ . }}{{ else }}jdbc:postgresql://{{ .Env.PROVIDER_DB_DNSNAME }}:{{ .Env.PROVIDER_DB_PORT }}/{{ .Env.PROVIDER_DB_DBNAME }}{{ end }}"
           username="{{ .Env.PROVIDER_DB_USERNAME }}" password="{{ .Env.PROVIDER_DB_PASSWORD }}" maxActive="{{ .Env.PROVIDER_DB_MAXCONNS }}" maxIdle="10" maxWait="60000"
-          removeAbandoned="true" removeAbandonedTimeout="60" logAbandoned="true"
+          removeAbandoned="true" removeAbandonedTimeout="60" logAbandoned="true" 
+          jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ResetAbandonedTimer"      
           timeBetweenEvictionRunsMillis="30000" validationQuery="SELECT 1" testOnBorrow="true" testWhileIdle="true"
           abandonWhenPercentageFull="50"/>
 
@@ -34,7 +36,8 @@
           type="javax.sql.DataSource" driverClassName="com.mysql.jdbc.Driver"
           url="{{ with .Env.PROVIDER_DB_URL }}{{ . }}{{ else }}jdbc:mysql://{{ .Env.PROVIDER_DB_DNSNAME }}:{{ .Env.PROVIDER_DB_PORT }}/{{ .Env.PROVIDER_DB_DBNAME }}?characterEncoding=UTF-8&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC{{ end }}"
           username="{{ .Env.PROVIDER_DB_USERNAME }}" password="{{ .Env.PROVIDER_DB_PASSWORD }}" maxActive="{{ .Env.PROVIDER_DB_MAXCONNS }}" maxIdle="10" maxWait="60000"
-          removeAbandoned="true" removeAbandonedTimeout="60" logAbandoned="true"
+          removeAbandoned="true" removeAbandonedTimeout="60" logAbandoned="true" 
+          jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ResetAbandonedTimer" 
           timeBetweenEvictionRunsMillis="30000" validationQuery="SELECT 1" testOnBorrow="true" testWhileIdle="true"
           abandonWhenPercentageFull="50"/>
     
@@ -45,7 +48,8 @@
           type="javax.sql.DataSource" driverClassName="oracle.jdbc.OracleDriver"
           url="{{ with .Env.PROVIDER_DB_URL }}{{ . }}{{ else }}jdbc:oracle:thin:@{{ .Env.PROVIDER_DB_DNSNAME }}:{{ .Env.PROVIDER_DB_PORT }}:{{ .Env.PROVIDER_DB_DBNAME }}{{ end }}"
           username="{{ .Env.PROVIDER_DB_USERNAME }}" password="{{ .Env.PROVIDER_DB_PASSWORD }}" maxActive="{{ .Env.PROVIDER_DB_MAXCONNS }}" maxIdle="10" maxWait="60000"
-          removeAbandoned="true" removeAbandonedTimeout="60" logAbandoned="true"
+          removeAbandoned="true" removeAbandonedTimeout="60" logAbandoned="true" 
+          jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ResetAbandonedTimer" 
           timeBetweenEvictionRunsMillis="30000" testOnBorrow="true" validationQuery="SELECT 1 from DUAL" testWhileIdle="true"
           abandonWhenPercentageFull="50"/>
 
@@ -56,7 +60,8 @@
           type="javax.sql.DataSource" driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
           url="{{ with .Env.PROVIDER_DB_URL }}{{ . }}{{ else }}jdbc:sqlserver://{{ .Env.PROVIDER_DB_DNSNAME }}:{{ .Env.PROVIDER_DB_PORT }};databaseName={{ .Env.PROVIDER_DB_DBNAME }}{{ end }}"
           username="{{ .Env.PROVIDER_DB_USERNAME }}" password="{{ .Env.PROVIDER_DB_PASSWORD }}" maxActive="{{ .Env.PROVIDER_DB_MAXCONNS }}" maxIdle="10" maxWait="60000"
-          removeAbandoned="true" removeAbandonedTimeout="60" logAbandoned="true"
+          removeAbandoned="true" removeAbandonedTimeout="60" logAbandoned="true" 
+          jdbcInterceptors="org.apache.tomcat.jdbc.pool.interceptor.ResetAbandonedTimer"  
           timeBetweenEvictionRunsMillis="30000" testOnBorrow="true" testWhileIdle="true" validationQuery="SELECT 1" defaultTransactionIsolation="READ_COMMITTED"
           abandonWhenPercentageFull="50"/>
     {{ end }}
