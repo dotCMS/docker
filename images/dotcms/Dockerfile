@@ -32,7 +32,9 @@ RUN mkdir /tmp/discovery-file-${ES_PLUGIN_discovery_file_VERSION} \
     && mkdir -p /srv/dotserver/tomcat-$(cat /srv/TOMCAT_VERSION)/webapps/ROOT/WEB-INF/elasticsearch/config/discovery-file \
     && touch /srv/dotserver/tomcat-$(cat /srv/TOMCAT_VERSION)/webapps/ROOT/WEB-INF/elasticsearch/config/discovery-file/unicast_hosts.txt
 
-
+RUN mkdir -p /srv/utils /srv/templates /srv/config
+RUN chmod -R 660 /srv
+RUN find /srv/ -type d -exec chmod 770 {} \;
 
 ##
 ## Begin target image build
@@ -59,15 +61,11 @@ RUN wget --quiet https://github.com/jwilder/dockerize/releases/download/$DOCKERI
     && tar -xzf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz -C /usr/local/bin \
     && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-
 COPY --from=build-cms /srv/ /srv/
 COPY ROOT/ /
-RUN mkdir -p /srv/utils /srv/templates /srv/config
-RUN chmod 510 /srv/*.sh && find /srv/utils/ -type f -name "*.sh" -exec chmod 551 {} \;
-
-RUN chmod -R 770 /srv
+RUN find /srv/ -type f -name "*.sh" -exec chmod 551 {} \;
 RUN mkdir -p /data/shared/assets && mkdir -p /data/local/dotsecure/license
-RUN chmod -R 770 /data
+RUN chmod -R 660 /data && find /data/ -type d -exec chmod 770 {} \;
 
 ENV SERVICE_DELAY_DEFAULT_MIN 1
 ENV SERVICE_DELAY_DEFAULT_STEP 3
