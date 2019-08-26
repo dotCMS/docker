@@ -32,7 +32,9 @@ RUN mkdir /tmp/discovery-file-${ES_PLUGIN_discovery_file_VERSION} \
     && mkdir -p /srv/dotserver/tomcat-$(cat /srv/TOMCAT_VERSION)/webapps/ROOT/WEB-INF/elasticsearch/config/discovery-file \
     && touch /srv/dotserver/tomcat-$(cat /srv/TOMCAT_VERSION)/webapps/ROOT/WEB-INF/elasticsearch/config/discovery-file/unicast_hosts.txt
 
-
+RUN mkdir -p /srv/utils /srv/templates /srv/config
+RUN chmod -R 660 /srv
+RUN find /srv/ -type d -exec chmod 770 {} \;
 
 ##
 ## Begin target image build
@@ -45,7 +47,7 @@ FROM openjdk:8-jdk-alpine
 WORKDIR /srv
 
 RUN apk --no-cache upgrade \
-    && apk add --no-cache bash openssl ca-certificates gnupg grep sed s6-dns \
+    && apk add --no-cache bash openssl ca-certificates gnupg grep sed tini nss s6-dns \
     && update-ca-certificates
 
 RUN apk --no-cache add libc6-compat tomcat-native && apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ 
@@ -53,35 +55,23 @@ RUN apk --no-cache add libc6-compat tomcat-native && apk add libsass --no-cache 
 # This is a nasty hack for libjsass, Alpine 3.9 no longer has a deprecated symlink in /lib
 RUN [ ! -e /lib/ld-linux-x86-64.so.2 ] &&  ln -s $(readlink /lib64/ld-linux-x86-64.so.2) /lib/ld-linux-x86-64.so.2 || :
 
-# S6 overlay and components distributed under ISC license (https://github.com/just-containers/s6-overlay/blob/master/LICENSE.md)
-ENV S6_OVERLAY_VERSION v1.21.4.0
-# RUN curl https://keybase.io/justcontainers/key.asc | gpg --import \
-#    && gpg --verify s6-overlay-amd64.tar.gz.sig s6-overlay-amd64.tar.gz
-# https://github.com/just-containers/s6-overlay/releases/download/v1.21.4.0/s6-overlay-amd64.tar.gz.sig
-RUN wget --quiet https://github.com/just-containers/s6-overlay/releases/download/${S6_OVERLAY_VERSION}/s6-overlay-amd64.tar.gz \
-    && tar -xzf s6-overlay-amd64.tar.gz -C / \
-    && rm s6-overlay-amd64.tar.gz
-
 # Dockerize distributed under MIT license (https://github.com/jwilder/dockerize)
 ENV DOCKERIZE_VERSION v0.6.0
 RUN wget --quiet https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && tar -xzf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz -C /usr/local/bin \
     && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-
 COPY --from=build-cms /srv/ /srv/
 COPY ROOT/ /
-RUN mkdir -p /srv/docker-container/utils /srv/docker-container/templates /srv/docker-container/config
-RUN chmod 500 /srv/init.sh && find /etc/cont-init.d/ /etc/fix-attrs.d/ /srv/docker-container/utils/ -type f -name "*.sh" -exec chmod 500 {} \;
+RUN find /srv/ -type f -name "*.sh" -exec chmod 551 {} \;
+RUN mkdir -p /data/shared/assets && mkdir -p /data/local/dotsecure/license
+RUN chmod -R 660 /data && find /data/ -type d -exec chmod 770 {} \;
 
 ENV SERVICE_DELAY_DEFAULT_MIN 1
 ENV SERVICE_DELAY_DEFAULT_STEP 3
 ENV SERVICE_DELAY_DEFAULT_MAX 30
 
-ENV S6_BEHAVIOUR_IF_STAGE2_FAILS 2
-ENV S6_CMD_ARG0 "/srv/init.sh"
-
-VOLUME /data/local
+#VOLUME /data/local
 
 ## Ports
 # Direct connect
@@ -95,5 +85,7 @@ EXPOSE 8000
 # Glowroot profiler - must be configured via CMS_JAVA_OPTS
 EXPOSE 4000
 
-ENTRYPOINT ["/init"]
+USER 1000000000
+
+ENTRYPOINT ["/sbin/tini", "--", "/srv/entrypoint.sh"]
 CMD ["dotcms"]

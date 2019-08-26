@@ -17,7 +17,7 @@ volumes:
 
 services:
   http:
-    image: dotcms/haproxy:latest
+    image: dotcms/haproxy:1.8-os
     environment:
       "HAPROXY_CERT_PATH": '/certs/'
 #      "HAPROXY_REDIRECT_HTTPS_ALL": 'true'
@@ -34,7 +34,7 @@ services:
       - http_net
 
   elasticsearch-static:
-    image: dotcms/elasticsearch:latest
+    image: dotcms/elasticsearch:6.1.3-os
     ports:
       - "9200:9200"
     environment:
@@ -49,7 +49,7 @@ services:
       - es_net
 
   dotcms:
-    image: dotcms/dotcms:latest
+    image: dotcms/dotcms:5.1.6-os
     environment:
       "CMS_HEAP_SIZE": '2g'
       "CMS_JAVA_OPTS": '-XX:+PrintFlagsFinal'
@@ -69,7 +69,11 @@ services:
       - es_net
 
   db:
-    image: dotcms/postgres:latest
+    image: bitnami/postgresql:9.6
+    environment:
+      "POSTGRESQL_USERNAME": 'dotcmsdbuser'
+      "POSTGRESQL_PASSWORD": 'password'
+      "POSTGRESQL_DATABASE": 'dotcms'
     volumes:
       - dbdata:/data/pg
     networks:

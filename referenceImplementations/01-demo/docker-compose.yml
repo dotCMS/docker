@@ -10,7 +10,7 @@ volumes:
 services:
 
   dotcms:
-    image: dotcms/dotcms:latest
+    image: dotcms/dotcms:5.1.6-os
     ports:
       - "8080:8080"
     environment:
@@ -22,13 +22,17 @@ services:
     volumes:
       - cms-shared:/data/shared
       - cms-local:/data/local
-      #- [serverpath]/license.dat:/data/local/dotsecure/license/license.dat
+      #- ./license.dat:/data/local/dotsecure/license/license.dat
       #- [serverpath]/license.zip:/data/shared/assets/license.zip
     networks:
       - db_net
 
   db:
-    image: dotcms/postgres:latest
+    image: bitnami/postgresql:9.6
+    environment:
+      "POSTGRESQL_USERNAME": 'dotcmsdbuser'
+      "POSTGRESQL_PASSWORD": 'password'
+      "POSTGRESQL_DATABASE": 'dotcms'
     volumes:
       - dbdata:/data/pg
     networks:
