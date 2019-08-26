@@ -1,21 +1,21 @@
-##One time setup instructions for single ubuntu testing server:
-###Follow instructions here:
+## One time setup instructions for single ubuntu testing server:
+### Follow instructions here:
 https://medium.com/@maheshacharya_44641/install-openshift-origin-on-ubuntu-18-04-7b98773c2ee6
 
-###As root run (optional but makes it easier to interact with oc):
+### As root run (optional but makes it easier to interact with oc):
 ```
 sudo -i
 oc completion bash >>/etc/bash_completion.d/oc_completion
 exit
 ```
 
-###Run this command so that elasticsearch nodes will startup without error:
+### Run this command so that elasticsearch nodes will startup without error:
 ```
 echo 'vm.max_map_count=262144' | sudo tee -a /etc/sysctl.conf > /dev/null
 sudo sysctl -p
 ```
 
-###If AWS (or other headless) Ubuntu instance, should do the following to address entropy problems:
+### If AWS (or other headless) Ubuntu instance, should do the following to address entropy problems:
 ```
 sudo apt-get install rng-tools
 sudo vi /etc/default/rng-tools
