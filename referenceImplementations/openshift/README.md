@@ -33,17 +33,19 @@ Needs to be owned by root:root
 Group and other need to have write permissions
 E.g. - chmod -R g+w,o+w .
 Structure should look like this:
-.&nbsp;
-├── dotassets&nbsp;
-├── database&nbsp;
-├── es-static&nbsp;
-└── plugins&nbsp;
-    └── static&nbsp;
-With permissions and ownership that look like this:&nbsp;
-drwxrwxrwx  2 root root 4096 Jul 29 01:01 dotassets&nbsp;
-drwxrwxrwx  2 root root 4096 Jul 29 01:02 database&nbsp;
-drwxrwxrwx  2 root root 4096 Jul 29 01:02 es-static&nbsp;
-drwxrwxrwx  3 root root 4096 Jul 25 20:19 plugins&nbsp;
+```
+.
+├── dotassets
+├── database
+├── es-static
+└── plugins
+    └── static
+With permissions and ownership that look like this:
+drwxrwxrwx  2 root root 4096 Jul 29 01:01 dotassets
+drwxrwxrwx  2 root root 4096 Jul 29 01:02 database
+drwxrwxrwx  2 root root 4096 Jul 29 01:02 es-static
+drwxrwxrwx  3 root root 4096 Jul 25 20:19 plugins
+```
 
 ## Bring up cluster:
 ```
