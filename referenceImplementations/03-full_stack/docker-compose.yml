@@ -115,6 +115,6 @@ services:
       "POSTGRESQL_PASSWORD": 'password'
       "POSTGRESQL_DATABASE": 'dotcms'
     volumes:
-      - dbdata:/data/pg
+      - dbdata:/bitnami/postgresql
     networks:
       - db_net
