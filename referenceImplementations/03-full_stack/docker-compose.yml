@@ -18,7 +18,7 @@ volumes:
 
 services:
   http:
-    image: dotcms/haproxy:1.8-os
+    image: dotcms/haproxy:1.8-alpha
     environment:
       "HAPROXY_CERT_PATH": '/certs/'
 #      "HAPROXY_REDIRECT_HTTPS_ALL": 'true'
