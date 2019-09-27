@@ -17,15 +17,15 @@ volumes:
 
 services:
   http:
-    image: dotcms/haproxy:1.8-alpha
+    image: dotcms/haproxy:1.8-os
     environment:
       "HAPROXY_CERT_PATH": '/certs/'
 #      "HAPROXY_REDIRECT_HTTPS_ALL": 'true'
 #      "HAPROXY_MAINTENANCE_PAGE": '/srv/config/503.http'
 
     ports:
-      - "80:80"
-      - "443:443"
+      - "80:8080"
+      - "443:8443"
 #    volumes:
 #      - /data/dotcms/haproxy/certs:/certs:ro
 #      - /data/dotcms/haproxy/503.http:/srv/config/503.http:ro
