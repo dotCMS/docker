@@ -3,9 +3,15 @@ WORKDIR /usr/share/elasticsearch/
 
 ARG ES_ADMIN_PASSWORD
 
+#Copying ES certificates 
 COPY ./certs/root-ca.pem /usr/share/elasticsearch/config/root-ca.pem
-COPY ./certs/esnode.pem /usr/share/elasticsearch/config/esnode.pem
-COPY ./certs/esnode-key.pem /usr/share/elasticsearch/config/esnode-key.pem
+COPY ./certs/root-ca.key /usr/share/elasticsearch/config/root-ca.key
+COPY ./certs/kirk.pem /usr/share/elasticsearch/config/kirk.pem
+COPY ./certs/kirk.key /usr/share/elasticsearch/config/kirk.key
+COPY ./certs/elasticsearch.pem /usr/share/elasticsearch/config/elasticsearch.pem
+COPY ./certs/elasticsearch.key /usr/share/elasticsearch/config/elasticsearch.key
+
+#Copying ES configuration
 COPY ./yml/custom-elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
 COPY ./yml/custom-config.yml /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/config.yml
 COPY ./yml/internal_users.yml /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml

@@ -8,18 +8,21 @@ discovery.zen.minimum_master_nodes: 1
 
 ######## Start OpenDistro for Elasticsearch Security Demo Configuration ########
 # WARNING: revise all the lines below before you go into production
-opendistro_security.ssl.transport.pemcert_filepath: esnode.pem
-opendistro_security.ssl.transport.pemkey_filepath: esnode-key.pem
+opendistro_security.ssl.transport.pemcert_filepath: elasticsearch.pem
+opendistro_security.ssl.transport.pemkey_filepath: elasticsearch.key
+opendistro_security.allow_unsafe_democertificates: false
 opendistro_security.ssl.transport.pemtrustedcas_filepath: root-ca.pem
 opendistro_security.ssl.transport.enforce_hostname_verification: false
+opendistro_security.ssl.transport.resolve_hostname: false
 opendistro_security.ssl.http.enabled: true
-opendistro_security.ssl.http.pemcert_filepath: esnode.pem
-opendistro_security.ssl.http.pemkey_filepath: esnode-key.pem
+opendistro_security.ssl.http.pemcert_filepath: elasticsearch.pem
+opendistro_security.ssl.http.pemkey_filepath: elasticsearch.key
 opendistro_security.ssl.http.pemtrustedcas_filepath: root-ca.pem
-opendistro_security.allow_unsafe_democertificates: true
-opendistro_security.allow_default_init_securityindex: true
+opendistro_security.nodes_dn:
+    - CN=elasticsearch,OU=Ops,O=dotCMS\, LLC.,DC=dotcms,DC=com
+    - CN=127.0.0.1,OU=Ops,O=dotCMS\, LLC.,DC=dotcms,DC=com
 opendistro_security.authcz.admin_dn:
-  - CN=kirk,OU=client,O=client,L=test, C=de
+    - CN=kirk.dotcms.com,OU=Ops,O=dotCMS\, LLC.,DC=dotcms,DC=com
 
 opendistro_security.audit.type: internal_elasticsearch
 opendistro_security.enable_snapshot_restore_privilege: true
