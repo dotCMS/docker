@@ -2,6 +2,7 @@
 set -e
 
 if [[ ! -z "${ES_ADMIN_PASSWORD}" ]]; then
+	echo "Setting password for admin user..." 
     cd /usr/share/elasticsearch/plugins/opendistro_security/tools
     chmod 500 /usr/share/elasticsearch/plugins/opendistro_security/tools/hash.sh
     es_hash_password=`(/usr/share/elasticsearch/plugins/opendistro_security/tools/hash.sh -p $ES_ADMIN_PASSWORD)`

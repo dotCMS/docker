@@ -15,8 +15,20 @@ COPY ./certs/elasticsearch.key /usr/share/elasticsearch/config/elasticsearch.key
 COPY ./yml/custom-elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
 COPY ./yml/custom-config.yml /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/config.yml
 COPY ./yml/internal_users.yml /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml
-COPY ./init.sh /usr/share/elasticsearch/init.sh
 
-RUN chmod 500 /usr/share/elasticsearch/init.sh
-ENV ES_ADMIN_PASSWORD=$ES_ADMIN_PASSWORD
-RUN /bin/bash -c "/usr/share/elasticsearch/init.sh"
+#Setting ES admin password as an environment variable
+ENV ES_ADMIN_PASSWORD=${ES_ADMIN_PASSWORD:-admin}
+
+#Copying scripts to set ES admin password (init.sh) and initialize open distro security plugin with our custom certificates (init_security_plugin.sh and securityadmin.sh) 
+COPY ./init.sh /usr/share/elasticsearch/init.sh
+COPY ./init_security_plugin.sh /usr/share/elasticsearch/init_security_plugin.sh
+RUN chmod +x /usr/share/elasticsearch/init_security_plugin.sh
+RUN chmod +x /usr/share/elasticsearch/plugins/opendistro_security/tools/securityadmin.sh
+RUN chmod +x /usr/share/elasticsearch/init.sh
+
+#Adding scripts at the beginning of the image entrypoint
+RUN sed -i '3 i\sh /usr/share/elasticsearch/init.sh \& sh /usr/share/elasticsearch/init_security_plugin.sh \&' /usr/local/bin/docker-entrypoint.sh
+
+#Installing net-tools to enable netstat command, which is used by init.sh script
+#Provide support to run netstat
+RUN yum -y install net-tools
