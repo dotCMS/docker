@@ -15,7 +15,7 @@ ARG BUILD_ID=HEAD
 WORKDIR /srv
 
 # Build env dependencies
-RUN apk update && apk --no-cache add bash grep openssl git nodejs-current nodejs-current-dev sed
+RUN apk update && apk --no-cache add bash grep openssl git sed
 
 # dotCMS core distributed under GPLv3 license (https://github.com/dotCMS/core/blob/master/license.txt)
 COPY build-src/ /build/
