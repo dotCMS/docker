@@ -41,9 +41,9 @@ case "$PROVIDER_DB_DRIVER" in
 esac
 
 
-touch /srv/DB_CONNECT_TEST
-[[ "$PROVIDER_DB_DRIVER" != "H2" ]] && echo "${PROVIDER_DB_DNSNAME}:${PROVIDER_DB_PORT}" >/srv/DB_CONNECT_TEST
-chmod 400 /srv/DB_CONNECT_TEST
+touch /tmp/DB_CONNECT_TEST
+[[ "$PROVIDER_DB_DRIVER" != "H2" ]] && echo "${PROVIDER_DB_DNSNAME}:${PROVIDER_DB_PORT}" >/tmp/DB_CONNECT_TEST
+
 
 echo "PROVIDER_DB_DRIVER=${PROVIDER_DB_DRIVER}" >>/srv/config/settings.ini
 [[ -n "$PROVIDER_DB_URL" ]] && echo "PROVIDER_DB_URL=${PROVIDER_DB_URL}" >>/srv/config/settings.ini

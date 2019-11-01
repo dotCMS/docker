@@ -3,6 +3,14 @@
     <Loader delegate="true"/><!--https://issues.apache.org/bugzilla/show_bug.cgi?id=55943#c13-->
     <Resource name="mail/MailSession" auth="Container" type="javax.mail.Session" mail.smtp.host="{{ .Env.CMS_SMTP_HOST }}" />
 
+    <!-- http://tomcat.apache.org/tomcat-8.0-doc/config/jar-scanner.html -->
+    <!-- http://tomcat.apache.org/tomcat-8.0-doc/config/jar-scan-filter.html -->
+    <JarScanner>
+        <JarScanFilter
+            pluggabilitySkip="${tomcat.util.scan.StandardJarScanFilter.jarsToSkip},ojdbc*.jar"
+            tldSkip="${tomcat.util.scan.StandardJarScanFilter.jarsToSkip},ojdbc*.jar"/>
+    </JarScanner>
+
     {{ if eq .Env.PROVIDER_DB_DRIVER "H2" }}
     <!-- H2 -->
     <Resource name="jdbc/dotCMSPool" auth="Container"

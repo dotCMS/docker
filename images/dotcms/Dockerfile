@@ -15,7 +15,7 @@ ARG BUILD_ID
 WORKDIR /srv
 
 # Build env dependencies
-RUN apk update && apk --no-cache add bash grep openssl git nodejs-current nodejs-current-dev sed
+RUN apk update && apk --no-cache add bash grep openssl git nodejs=10.14.2-r0 npm=10.14.2-r0  sed
 
 # dotCMS core distributed under GPLv3 license (https://github.com/dotCMS/core/blob/master/license.txt)
 COPY build-src/ /build/
@@ -63,7 +63,13 @@ RUN wget --quiet https://github.com/jwilder/dockerize/releases/download/$DOCKERI
 
 COPY --from=build-cms /srv/ /srv/
 COPY ROOT/ /
+
 RUN find /srv/ -type f -name "*.sh" -exec chmod 551 {} \;
+RUN mkdir -p /srv/home
+
+RUN chmod 777 /srv/home
+RUN chmod a+wr /srv/templates/dotcms/CONF
+
 RUN mkdir -p /data/shared/assets && mkdir -p /data/local/dotsecure/license
 RUN chmod -R 660 /data && find /data/ -type d -exec chmod 770 {} \;
 
