@@ -16,9 +16,6 @@ WORKDIR /srv
 
 # Build env dependencies
 
-RUN apk update && apk --no-cache add bash grep openssl git nodejs=10.14.2-r0 npm=10.14.2-r0  sed
-
-
 # dotCMS core distributed under GPLv3 license (https://github.com/dotCMS/core/blob/master/license.txt)
 COPY build-src/ /build/
 RUN chmod 500 /build/build_dotcms.sh && /build/build_dotcms.sh ${BUILD_FROM} ${BUILD_ID} 
