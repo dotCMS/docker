@@ -1,11 +1,13 @@
-#!/usr/bin/with-contenv /bin/bash
+#!/bin/bash
 
 set -e
 
-source /srv/docker-container/utils/discovery-include.sh
-source /srv/docker-container/utils/config-defaults.sh
+echo "Starting background discovery..."
 
-source /srv/docker-container/utils/haproxy-discover.sh
+source /srv/utils/discovery-include.sh
+source /srv/utils/config-defaults.sh
+
+source /srv/utils/haproxy-discover.sh
 
 sleep $HAPROXY_SERVICE_REFRESH
 
@@ -23,7 +25,6 @@ export HAPROXY_TLS_ENABLE
 export HAPROXY_ADMIN_PASSWORD
 export HAPROXY_REDIRECT_HTTPS_ALL
 
-
 # Loop as long as HAProxy is running
 while kill -s 0 $(cat /srv/pidfile) 2>/dev/null; do
 
@@ -39,8 +40,8 @@ while kill -s 0 $(cat /srv/pidfile) 2>/dev/null; do
 
         export CMS_BACKEND_SERVERS=$(cat /srv/config/backend_members.txt |awk -vORS=, '{ print $1 }' | sed 's/,$//' )
 
-        dockerize -template /srv/docker-container/templates/haproxy-backend-http.cfg.tmpl:/srv/config/haproxy-backend-http.cfg
-        dockerize -template /srv/docker-container/templates/haproxy-backend-https.cfg.tmpl:/srv/config/haproxy-backend-https.cfg
+        dockerize -template /srv/templates/haproxy-backend-http.cfg.tmpl:/srv/config/haproxy-backend-http.cfg
+        dockerize -template /srv/templates/haproxy-backend-https.cfg.tmpl:/srv/config/haproxy-backend-https.cfg
 
         pid=$(cat /srv/pidfile)
         kill -SIGUSR2 $pid
@@ -52,4 +53,3 @@ while kill -s 0 $(cat /srv/pidfile) 2>/dev/null; do
 done
 
 echo "ERROR: HAProxy pid not found!! Quitting"
-s6-svscanctl -t /var/run/s6/services
