@@ -18,4 +18,5 @@ RUN mkdir -p /build/src \
     && echo "Pulling dotCMS src" \
     && cd /build/src && git clone https://github.com/dotCMS/core.git core \ 
     && cd /build/src/core/dotCMS \
+    && git gc --aggressive \
     && ./gradlew  --no-daemon  downloadDependencies clonePullTomcatDist 
