@@ -30,7 +30,7 @@ if [[ "${1}" == "dotcms" || -z "${1}" ]]; then
 
     cd /srv/home
 
-    DB_CONNECT_TEST="$(cat /srv/DB_CONNECT_TEST | tr -d [:space:])"
+    DB_CONNECT_TEST="$(cat /tmp/DB_CONNECT_TEST | tr -d [:space:])"
     if [[ -n "$DB_CONNECT_TEST" ]]; then
         exec -- \
         /usr/local/bin/dockerize -wait tcp://${DB_CONNECT_TEST} -timeout 60s \
