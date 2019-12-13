@@ -18,3 +18,8 @@ JAVA_OPTS="$JAVA_OPTS -Dpdfbox.fontcache=/data/local/dotsecure"
 
 # Finally, add user-provided JAVA_OPTS
 JAVA_OPTS="$JAVA_OPTS ${CMS_JAVA_OPTS}"
+
+echo "HOSTNAME=${HOSTNAME}" >>/srv/config/settings.ini
+echo "LANG=${LANG}" >>/srv/config/settings.ini
+echo "JAVA_HOME=${JAVA_HOME}" >>/srv/config/settings.ini
+echo "JAVA_OPTS=${JAVA_OPTS}" >>/srv/config/settings.ini
