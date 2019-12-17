@@ -22,7 +22,7 @@
   <!-- Group settings -->
   <group>
     <name>{{ .Env.PROVIDER_HAZELCAST_GROUPNAME }}</name>
-    <!--<password>dev-pass</password>-->
+    <password>{{ .Env.PROVIDER_HAZELCAST_GROUPPASSWORD }}</password>
   </group>
 
   <!--<license-key>HAZELCAST_ENTERPRISE_LICENSE_KEY</license-key> -->

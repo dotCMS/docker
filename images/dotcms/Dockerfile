@@ -32,9 +32,8 @@ RUN mkdir /tmp/discovery-file-${ES_PLUGIN_discovery_file_VERSION} \
     && mkdir -p /srv/dotserver/tomcat-$(cat /srv/TOMCAT_VERSION)/webapps/ROOT/WEB-INF/elasticsearch/config/discovery-file \
     && touch /srv/dotserver/tomcat-$(cat /srv/TOMCAT_VERSION)/webapps/ROOT/WEB-INF/elasticsearch/config/discovery-file/unicast_hosts.txt
 
-RUN mkdir -p /srv/utils /srv/templates /srv/config
-RUN chmod -R 660 /srv
-RUN find /srv/ -type d -exec chmod 770 {} \;
+RUN mkdir -p /srv/utils /srv/templates /srv/config /srv/home
+RUN chmod -R 666 /srv && find /srv/ -type d -exec chmod a+x {} \;
 
 ##
 ## Begin target image build
@@ -64,14 +63,9 @@ RUN wget --quiet https://github.com/jwilder/dockerize/releases/download/$DOCKERI
 COPY --from=build-cms /srv/ /srv/
 COPY ROOT/ /
 
-RUN find /srv/ -type f -name "*.sh" -exec chmod 551 {} \;
-RUN mkdir -p /srv/home
+RUN find /srv/ -type f -name "*.sh" -exec chmod a+x {} \;
 
-RUN chmod 777 /srv/home
-RUN chmod a+wr /srv/templates/dotcms/CONF
-
-RUN mkdir -p /data/shared/assets && mkdir -p /data/local/dotsecure/license
-RUN chmod -R 660 /data && find /data/ -type d -exec chmod 770 {} \;
+RUN mkdir -p /data/shared/assets && mkdir -p /data/local/dotsecure/license && chmod -R 660 /data && find /data/ -type d -exec chmod 770 {} \;
 
 ENV SERVICE_DELAY_DEFAULT_MIN 1
 ENV SERVICE_DELAY_DEFAULT_STEP 3
@@ -95,3 +89,4 @@ USER 1000000000
 
 ENTRYPOINT ["/sbin/tini", "--", "/srv/entrypoint.sh"]
 CMD ["dotcms"]
+
