@@ -17,7 +17,7 @@ if [[ -d /plugins/static ]]; then
 	    echo "Found $(find /plugins/static/ -mindepth 1 -maxdepth 1 -type d | wc -l) plugins"
 	    mv /srv/plugins/common.xml /tmp/plugins-common.xml
 	    mv /srv/plugins/plugins.xml /tmp/plugins-plugins.xml
-	    cp -a /plugins/static/* /srv/plugins/
+	    cp -r /plugins/static/* /srv/plugins/
 	    cp /tmp/plugins-common.xml /srv/plugins/common.xml 
 	    cp /tmp/plugins-plugins.xml /srv/plugins/plugins.xml 
 
