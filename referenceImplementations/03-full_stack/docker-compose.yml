@@ -15,6 +15,8 @@ volumes:
   #cms-local:
   dbdata:
   esdata:
+  esdata-master2:
+  esdata-master3:
 
 services:
   http:
@@ -56,30 +58,71 @@ services:
     networks:
       - hz_net
 
-  elasticsearch-static:
-    image: dotcms/elasticsearch:6.1.3-os
+  elasticsearch:
+    image: gcr.io/cicd-246518/es-open-distro:1.3.0
+    container_name: elasticsearch
     ports:
       - "9200:9200"
+      - "9300:9300"
     environment:
       "PROVIDER_ELASTICSEARCH_HEAP_SIZE": '1500m'
-      "PROVIDER_ELASTICSEARCH_DNSNAMES": 'elasticsearch-static,elasticsearch'
+      "PROVIDER_ELASTICSEARCH_DNSNAMES": 'elasticsearch,elasticsearch-master2'
       "PROVIDER_ELASTICSEARCH_SVC_DELAY_MIN": '1'
       "PROVIDER_ELASTICSEARCH_SVC_DELAY_STEP": '1'
       "PROVIDER_ELASTICSEARCH_SVC_DELAY_MAX": '2'
+      "ES_ADMIN_PASSWORD": 'admin'
+      cluster.name: dotCMSContentIndex
+      node.name: elasticsearch
+      node.master: 'true'
+      node.data: 'true'
+      discovery.seed_hosts: elasticsearch,elasticsearch-master2,elasticsearch-master3
+      cluster.initial_master_nodes: elasticsearch,elasticsearch-master2,elasticsearch-master3
     volumes:
       - esdata:/data
     networks:
       - es_net
 
-  elasticsearch:
-    image: dotcms/elasticsearch:6.1.3-os
-    depends_on:
-      - elasticsearch-static
+  elasticsearch-master2:
+    image: gcr.io/cicd-246518/es-open-distro:1.3.0
+    container_name: elasticsearch-master2
     environment:
       "PROVIDER_ELASTICSEARCH_HEAP_SIZE": '1024m'
-      "PROVIDER_ELASTICSEARCH_DNSNAMES": 'elasticsearch-static,elasticsearch'
+      "PROVIDER_ELASTICSEARCH_DNSNAMES": 'elasticsearch,elasticsearch-master2,elasticsearch-master3'
       "PROVIDER_ELASTICSEARCH_SVC_DELAY_MIN": '3'
       "PROVIDER_ELASTICSEARCH_SVC_DELAY_MAX": '30'
+      "ES_ADMIN_PASSWORD": 'admin'
+      cluster.name: dotCMSContentIndex
+      node.name: elasticsearch-master2
+      node.master: 'true'
+      node.data: 'true'
+      discovery.seed_hosts: elasticsearch,elasticsearch-master2,elasticsearch-master3
+      cluster.initial_master_nodes: elasticsearch,elasticsearch-master2,elasticsearch-master3
+    depends_on:
+      - elasticsearch
+    volumes:
+      - esdata-master2:/data
+    networks:
+      - es_net
+
+  elasticsearch-master3:
+    image: gcr.io/cicd-246518/es-open-distro:1.3.0
+    container_name: elasticsearch-master3
+    environment:
+      "PROVIDER_ELASTICSEARCH_HEAP_SIZE": '1024m'
+      "PROVIDER_ELASTICSEARCH_DNSNAMES": 'elasticsearch,elasticsearch-master2,elasticsearch-master3'
+      "PROVIDER_ELASTICSEARCH_SVC_DELAY_MIN": '3'
+      "PROVIDER_ELASTICSEARCH_SVC_DELAY_MAX": '30'
+      "ES_ADMIN_PASSWORD": 'admin'
+      cluster.name: dotCMSContentIndex
+      node.name: elasticsearch-master3
+      node.master: 'true'
+      node.data: 'true'
+      discovery.seed_hosts: elasticsearch,elasticsearch-master2,elasticsearch-master3
+      cluster.initial_master_nodes: elasticsearch,elasticsearch-master2,elasticsearch-master3
+    depends_on:
+      - elasticsearch-master2
+    volumes:
+      - esdata-master3:/data
     networks:
       - es_net
 
@@ -89,14 +132,17 @@ services:
       "CMS_HEAP_SIZE": '2g'
       "CMS_JAVA_OPTS": '-XX:+PrintFlagsFinal'
       "PROVIDER_DB_DNSNAME": 'db'
-      "PROVIDER_ELASTICSEARCH_DNSNAMES": 'elasticsearch-static, elasticsearch'
+      "PROVIDER_ELASTICSEARCH_DNSNAMES": 'elasticsearch,elasticsearch-master2,elasticsearch-master3'
+      "ES_ADMIN_PASSWORD": 'admin'
     depends_on:
-      - elasticsearch-static
+      - elasticsearch
+      - elasticsearch-master2
+      - elasticsearch-master3
       - hazelcast
       - db
       - http
     volumes:
-      #- cms-shared:/data/shared
+      - cms-shared:/data/shared
       #- [serverpath]/license.dat:/data/local/dotsecure/license/license.dat
       #- [serverpath]/license.zip:/data/shared/assets/license.zip
       - ${PWD}/license.zip:/data/shared/assets/license.zip
