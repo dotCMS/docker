@@ -18,17 +18,6 @@ WORKDIR /srv
 COPY build-src/ /build/
 RUN chmod 500 /build/build_dotcms.sh && /build/build_dotcms.sh ${BUILD_FROM} ${BUILD_ID} 
 
-# Add Elasticsearch File-Based Discovery Plugin (https://www.elastic.co/guide/en/elasticsearch/plugins/6.1/discovery-file.html)
-ENV ES_PLUGIN_discovery_file_VERSION 6.1.3
-RUN mkdir /tmp/discovery-file-${ES_PLUGIN_discovery_file_VERSION} \
-    && unzip /build/elasticsearch-plugins/discovery-file-${ES_PLUGIN_discovery_file_VERSION}.zip -d /tmp/discovery-file-${ES_PLUGIN_discovery_file_VERSION} \
-    && mkdir -p /srv/dotserver/tomcat-$(cat /srv/TOMCAT_VERSION)/webapps/ROOT/WEB-INF/elasticsearch/plugins/discovery-file-${ES_PLUGIN_discovery_file_VERSION} \
-    && cp /tmp/discovery-file-${ES_PLUGIN_discovery_file_VERSION}/elasticsearch/*.jar \
-      /tmp/discovery-file-${ES_PLUGIN_discovery_file_VERSION}/elasticsearch/plugin-descriptor.properties \
-      /srv/dotserver/tomcat-$(cat /srv/TOMCAT_VERSION)/webapps/ROOT/WEB-INF/elasticsearch/plugins/discovery-file-${ES_PLUGIN_discovery_file_VERSION} \
-    && mkdir -p /srv/dotserver/tomcat-$(cat /srv/TOMCAT_VERSION)/webapps/ROOT/WEB-INF/elasticsearch/config/discovery-file \
-    && touch /srv/dotserver/tomcat-$(cat /srv/TOMCAT_VERSION)/webapps/ROOT/WEB-INF/elasticsearch/config/discovery-file/unicast_hosts.txt
-
 RUN mkdir -p /srv/utils /srv/templates /srv/config
 RUN chmod -R 660 /srv
 RUN find /srv/ -type d -exec chmod 770 {} \;
