@@ -9,6 +9,7 @@ echo "Hazelcast Config ...."
 if [[ -z "${PROVIDER_HAZELCAST_DNSNAMES}" ]]; then
 
     echo "PROVIDER_HAZELCAST_GROUPNAME=${PROVIDER_HAZELCAST_GROUPNAME}" >>/srv/config/settings.ini
+    echo "PROVIDER_HAZELCAST_GROUPPASSWORD=${PROVIDER_HAZELCAST_GROUPPASSWORD}" >>/srv/config/settings.ini
     echo "PROVIDER_HAZELCAST_PORT=${PROVIDER_HAZELCAST_PORT}" >>/srv/config/settings.ini
 
 else
@@ -50,6 +51,7 @@ else
     fi
 
     echo "PROVIDER_HAZELCAST_GROUPNAME=${PROVIDER_HAZELCAST_GROUPNAME}" >>/srv/config/settings.ini
+    echo "PROVIDER_HAZELCAST_GROUPPASSWORD=${PROVIDER_HAZELCAST_GROUPPASSWORD}" >>/srv/config/settings.ini
     echo "PROVIDER_HAZELCAST_PORT=${PROVIDER_HAZELCAST_PORT}" >>/srv/config/settings.ini
 
 fi
