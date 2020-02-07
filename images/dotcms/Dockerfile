@@ -1,21 +1,18 @@
 # OpenJDK distributed under GPLv2+Oracle Classpath Exception license (http://openjdk.java.net/legal/gplv2+ce.html)
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
-FROM openjdk:8-jdk-alpine as build-cms
+FROM dotcms/dotcms-seed as build-cms 
 
 LABEL com.dotcms.contact "support@dotcms.com"
 LABEL com.dotcms.vendor "dotCMS LLC"
 LABEL com.dotcms.description "dotCMS Content Management System"
 
 #  One of ["TARBALL_URL", "RELEASE", "NIGHTLY", "COMMIT", "TAG" ]
-ARG BUILD_FROM=TARBALL_URL
+ARG BUILD_FROM=COMMIT
 
 #  Value resolved in the context of $BUILD_FROM
-ARG BUILD_ID      
+ARG BUILD_ID=HEAD      
 
 WORKDIR /srv
-
-# Build env dependencies
-RUN apk update && apk --no-cache add bash grep openssl git nodejs=10.14.2-r0 npm=10.14.2-r0  sed
 
 # dotCMS core distributed under GPLv3 license (https://github.com/dotCMS/core/blob/master/license.txt)
 COPY build-src/ /build/
