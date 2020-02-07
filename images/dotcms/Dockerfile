@@ -60,7 +60,11 @@ RUN wget --quiet https://github.com/jwilder/dockerize/releases/download/$DOCKERI
 COPY --from=build-cms /srv/ /srv/
 COPY ROOT/ /
 
+# Make scripts runable
 RUN find /srv/ -type f -name "*.sh" -exec chmod a+x {} \;
+
+# Make plugin merging directories writable
+RUN find /srv/templates -type d -exec chmod 770 {} \;
 
 RUN mkdir -p /data/shared/assets && mkdir -p /data/local/dotsecure/license && chmod -R 660 /data && find /data/ -type d -exec chmod 770 {} \;
 
