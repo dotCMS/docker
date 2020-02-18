@@ -15,6 +15,42 @@ volumes:
   dbdata:
   esdata:
 
+secrets:
+   connection_db_base_url:
+    external: true
+    name: connection_db_base_url
+   connection_db_driver:
+    external: true
+    name: connection_db_driver
+   connection_db_leak_detection_threshold:
+    external: true
+    name: connection_db_leak_detection_threshold
+   connection_db_max_idle:
+    external: true
+    name: connection_db_max_idle
+   connection_db_max_total:
+    external: true
+    name: connection_db_max_total
+   connection_db_max_wait:
+    external: true
+    name: connection_db_max_wait
+   connection_db_name:
+    external: true
+    name: connection_db_name
+   connection_db_password:
+    external: true
+    name: connection_db_password
+   connection_db_username:
+    external: true
+    name: connection_db_username
+   connection_db_validation_query:
+    external: true
+    name: connection_db_validation_query
+    ##Uncomment these lines in case you need to define a default transaction isolation
+   #connection_db_default_transaction_isolation:
+   # external: true
+   # name: connection_db_default_transaction_isolation
+
 services:
   http:
     image: dotcms/haproxy:1.8-os
@@ -65,20 +101,42 @@ services:
       - http
     volumes:
       - cms-shared:/data/shared
-      #- [serverpath]/license.dat:/data/local/dotsecure/license/license.dat
+      - /Users/nollymar/Documents/workspace-dotcms/licenses/license.zip:/data/shared/assets/license.zip
       #- [serverpath]/license.zip:/data/shared/assets/license.zip
     networks:
       - db_net
       - http_net
       - es_net
+    secrets:
+      - connection_db_base_url
+      - connection_db_driver
+      - connection_db_leak_detection_threshold
+      - connection_db_max_idle
+      - connection_db_max_total
+      - connection_db_max_wait
+      - connection_db_password
+      - connection_db_username
+      - connection_db_validation_query
 
   db:
-    image: bitnami/postgresql:11
+    image: postgres:11
+    ports:
+      - "15432:5432"
+    command: postgres -c 'max_connections=200'
     environment:
-      "POSTGRESQL_USERNAME": 'dotcmsdbuser'
-      "POSTGRESQL_PASSWORD": 'password'
-      "POSTGRESQL_DATABASE": 'dotcms'
+        #Comment these 3 lines if you want to use docker secrets (POSTGRES_PASSWORD, POSTGRES_USER, POSTGRES_DB)
+        "POSTGRES_USER": 'dotcmsdbuser'
+        "POSTGRES_PASSWORD": 'password'
+        "POSTGRES_DB": 'dotcms'
+        #Uncomment these 3 lines if you want to use docker secrets (POSTGRES_PASSWORD_FILE, POSTGRES_USER_FILE, POSTGRES_DB_FILE)
+        #"POSTGRES_PASSWORD_FILE": /run/secrets/connection_db_password
+        #"POSTGRES_USER_FILE": /run/secrets/connection_db_username
+        #"POSTGRES_DB_FILE": /run/secrets/connection_db_name
+    secrets:
+      - connection_db_name
+      - connection_db_password
+      - connection_db_username
     volumes:
-      - dbdata:/bitnami/postgresql
+      - dbdata:/var/lib/postgresql/data
     networks:
       - db_net
