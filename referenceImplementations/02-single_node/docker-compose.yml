@@ -14,6 +14,45 @@ volumes:
   #cms-local:
   dbdata:
   esdata:
+  
+secrets:
+   connection.pool.name:
+    external: true
+    name: connection.pool.name
+   connection.db.base.url:
+    external: true
+    name: connection.db.base.url
+   connection.db.driver:
+    external: true
+    name: connection.db.driver
+   connection.db.leak.detection.threshold:
+    external: true
+    name: connection.db.leak.detection.threshold
+   connection.db.max.idle:
+    external: true
+    name: connection.db.max.idle
+   connection.db.max.total:
+    external: true
+    name: connection.db.max.total
+   connection.db.max.wait:
+    external: true
+    name: connection.db.max.wait
+   connection.db.name:
+    external: true
+    name: connection.db.name
+   connection.db.password:
+    external: true
+    name: connection.db.password
+   connection.db.username:
+    external: true
+    name: connection.db.username
+   connection.db.validation.query:
+    external: true
+    name: connection.db.validation.query
+    ##Uncomment these lines in case you need to define a default transaction isolation 
+   #connection.db.default.transaction.isolation:
+   # external: true
+   # name: connection.db.default.transaction.isolation
 
 services:
   http:
@@ -52,7 +91,7 @@ services:
       - es_net
 
   dotcms:
-    image: dotcms/master:latest
+    image: dotcms/issue-17843
     environment:
       "CMS_HEAP_SIZE": '2g'
       "CMS_JAVA_OPTS": '-XX:+PrintFlagsFinal'
@@ -71,14 +110,31 @@ services:
       - db_net
       - http_net
       - es_net
+    secrets:
+      - connection.db.base.url
+      - connection.db.driver
+      - connection.db.leak.detection.threshold
+      - connection.db.max.idle
+      - connection.db.max.total
+      - connection.db.max.wait
+      - connection.pool.name
+      - connection.db.password
+      - connection.db.username
+      - connection.db.validation.query
 
   db:
-    image: bitnami/postgresql:9.6
-    environment:
-      "POSTGRESQL_USERNAME": 'dotcmsdbuser'
-      "POSTGRESQL_PASSWORD": 'password'
-      "POSTGRESQL_DATABASE": 'dotcms'
+    image: postgres:9.6
+    ports:
+      - "15432:5432"
+    environment: 
+        "POSTGRES_PASSWORD_FILE": /run/secrets/connection.db.password
+        "POSTGRES_USER_FILE": /run/secrets/connection.db.username
+        "POSTGRES_DB_FILE": /run/secrets/connection.db.name
+    secrets:
+      - connection.db.name
+      - connection.db.password
+      - connection.db.username
     volumes:
-      - dbdata:/bitnami/postgresql
+      - dbdata:/var/lib/postgresql/data
     networks:
       - db_net
