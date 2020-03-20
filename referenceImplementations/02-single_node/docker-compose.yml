@@ -49,7 +49,7 @@ services:
       - es_net
 
   dotcms:
-    image: dotcms/dotcms:5.1.6-os
+    image: dotcms/dotcms:latest
     environment:
       "CMS_HEAP_SIZE": '2g'
       "CMS_JAVA_OPTS": '-XX:+PrintFlagsFinal'
