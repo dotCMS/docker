@@ -107,7 +107,7 @@ services:
       - hz_net
 
   db:
-    image: bitnami/postgresql:9.6
+    image: bitnami/postgresql:11
     environment:
       "POSTGRESQL_USERNAME": 'dotcmsdbuser'
       "POSTGRESQL_PASSWORD": 'password'
