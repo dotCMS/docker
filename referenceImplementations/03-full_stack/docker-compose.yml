@@ -37,7 +37,6 @@ services:
   hazelcast:
     image: dotcms/hazelcast:3.9.2-os
     environment:
-      "PROVIDER_HAZELCAST_DNSNAMES": 'hazelcast'
       "PROVIDER_HAZELCAST_HEAP_MIN": '128m'
       "PROVIDER_HAZELCAST_HEAP_MAX": '512m'
       "PROVIDER_HAZELCAST_MANCENTER_ENABLED": 'true'
@@ -85,13 +84,12 @@ services:
       - es_net
 
   dotcms:
-    image: dotcms/dotcms:5.1.6-os
+    image: dotcms/dotcms:latest
     environment:
       "CMS_HEAP_SIZE": '2g'
       "CMS_JAVA_OPTS": '-XX:+PrintFlagsFinal'
       "PROVIDER_DB_DNSNAME": 'db'
       "PROVIDER_ELASTICSEARCH_DNSNAMES": 'elasticsearch-static, elasticsearch'
-      "PROVIDER_HAZELCAST_DNSNAMES": 'hazelcast'
     depends_on:
       - elasticsearch-static
       - hazelcast
@@ -109,7 +107,7 @@ services:
       - hz_net
 
   db:
-    image: bitnami/postgresql:9.6
+    image: bitnami/postgresql:11
     environment:
       "POSTGRESQL_USERNAME": 'dotcmsdbuser'
       "POSTGRESQL_PASSWORD": 'password'
