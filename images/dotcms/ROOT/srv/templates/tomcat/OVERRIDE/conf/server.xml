@@ -52,7 +52,7 @@
          on to the appropriate Host (virtual host).
          Documentation at /docs/config/engine.html -->
 
-    <Engine name="Catalina" defaultHost="localhost" jvmRoute="{{ .Env.HOSTNAME }}">
+    <Engine name="Catalina" defaultHost="localhost">
 
 
       <Host name="localhost"  appBase="webapps"
