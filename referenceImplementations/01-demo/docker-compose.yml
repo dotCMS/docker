@@ -10,7 +10,7 @@ volumes:
 services:
 
   dotcms:
-    image: dotcms/dotcms:5.1.6-os
+    image: dotcms/dotcms:latest
     ports:
       - "8080:8080"
     environment:
@@ -28,7 +28,7 @@ services:
       - db_net
 
   db:
-    image: bitnami/postgresql:9.6
+    image: bitnami/postgresql:11
     environment:
       "POSTGRESQL_USERNAME": 'dotcmsdbuser'
       "POSTGRESQL_PASSWORD": 'password'

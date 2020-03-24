@@ -91,7 +91,7 @@ services:
       - es_net
 
   dotcms:
-    image: dotcms/issue-17843
+    image: dotcms/dotcms:latest
     environment:
       "CMS_HEAP_SIZE": '2g'
       "CMS_JAVA_OPTS": '-XX:+PrintFlagsFinal'
@@ -123,7 +123,7 @@ services:
       - connection.db.validation.query
 
   db:
-    image: postgres:9.6
+    image: postgres:11
     ports:
       - "15432:5432"
     environment: 
