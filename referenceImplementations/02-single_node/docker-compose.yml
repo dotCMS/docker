@@ -101,7 +101,7 @@ services:
       - http
     volumes:
       - cms-shared:/data/shared
-      - /Users/nollymar/Documents/workspace-dotcms/licenses/license.zip:/data/shared/assets/license.zip
+      #- [serverpath]/license.dat:/data/local/dotsecure/license/license.dat
       #- [serverpath]/license.zip:/data/shared/assets/license.zip
     networks:
       - db_net
