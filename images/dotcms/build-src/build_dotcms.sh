@@ -30,7 +30,7 @@ build_by_commit() {
     echo "Checking out commit/tag/branch: $1"
     git checkout $1
 
-    cd dotCMS && ./gradlew createDistPrep
+    cd dotCMS && ./gradlew createDistPrep -PuseGradleNode=false
     find ../dist/  -name "*.sh" -exec chmod 500 {} \;
     mv ../dist/* "${build_target_dir}"
 }
