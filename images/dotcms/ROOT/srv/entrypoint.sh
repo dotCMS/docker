@@ -8,13 +8,6 @@ source /srv/config.sh
 
 if [[ "${1}" == "dotcms" || -z "${1}" ]]; then
 
-    if [[ -z "${PROVIDER_ELASTICSEARCH_DNSNAMES}" ]]; then
-        echo "No external Elasticsearch configured..."
-    else
-        echo "Starting background Elasticsearch discovery..."
-        /srv/utils/es-bg-discovery.sh &
-    fi
-
     echo "Starting dotCMS ..."
 
     [[ -f /srv/TOMCAT_VERSION ]] && TOMCAT_VERSION=$( cat /srv/TOMCAT_VERSION )
