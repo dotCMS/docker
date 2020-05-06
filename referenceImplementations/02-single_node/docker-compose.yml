@@ -83,7 +83,7 @@ services:
       "ES_ADMIN_PASSWORD": 'admin'
       discovery.type: single-node
     volumes:
-      - esdata:/data
+      - esdata:/usr/share/elasticsearch/data
     networks:
       - es_net
 
