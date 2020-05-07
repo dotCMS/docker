@@ -6,13 +6,9 @@ source /srv/utils/config-defaults.sh
 
 
 echo "Database config ...."
-[[ -z "${PROVIDER_DB_DNSNAME}" ]] && PROVIDER_DB_DRIVER="H2"
+[[ -z "${PROVIDER_DB_DNSNAME}" ]] && PROVIDER_DB_DRIVER="POSTGRES"
 
 case "$PROVIDER_DB_DRIVER" in 
-
-    H2)
-        : ${PROVIDER_DB_DBNAME:="h2_dotcms_data"}
-        ;;
 
     POSTGRES)
         : ${PROVIDER_DB_DBNAME:="dotcms"}
