@@ -21,7 +21,7 @@ TOMCAT_HOME=/srv/dotserver/tomcat-${TOMCAT_VERSION}
 : ${CMS_JAVA_OPTS:=""}
 
 # Maximum number of Tomcat Connector threadpool threads (shared across Connectors)
-: ${CMS_CONNECTOR_THREADS:="100"}
+: ${CMS_CONNECTOR_THREADS:="200"}
 
 # SMTP hostname for CMS
 : ${CMS_SMTP_HOST:="smtp"}
