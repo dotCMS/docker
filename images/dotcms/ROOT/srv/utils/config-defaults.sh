@@ -57,7 +57,7 @@ TOMCAT_HOME=/srv/dotserver/tomcat-${TOMCAT_VERSION}
 : ${PROVIDER_DB_PASSWORD:="password"}
 
 # Maximum number of database connections
-: ${PROVIDER_DB_MAXCONNS:="120"}
+: ${PROVIDER_DB_MAXCONNS:="200"}
 
 
 
