@@ -2,7 +2,7 @@
 
 set -e
 
-umask 007 
+umask 007
 
 source /srv/config.sh
 
@@ -23,15 +23,25 @@ if [[ "${1}" == "dotcms" || -z "${1}" ]]; then
 
     cd /srv/home
 
+    if [ ! -z "${WAIT_DB_FOR}" ]; then
+      echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+      echo "            Requested sleep of [${WAIT_DB_FOR}], waiting for the db?"
+      echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+      echo ""
+      sleep ${WAIT_DB_FOR}
+    fi
+
     DB_CONNECT_TEST="$(cat /tmp/DB_CONNECT_TEST | tr -d [:space:])"
+    echo "DB Connect Test: ${DB_CONNECT_TEST}"
+
     if [[ -n "$DB_CONNECT_TEST" ]]; then
         exec -- \
-        /usr/local/bin/dockerize -wait tcp://${DB_CONNECT_TEST} -timeout 60s \
-         ${TOMCAT_HOME}/bin/catalina.sh run
+          /usr/local/bin/dockerize -wait tcp://${DB_CONNECT_TEST} -timeout 60s \
+          ${TOMCAT_HOME}/bin/catalina.sh run
     else
         exec -- \
-        /usr/local/bin/dockerize \
-         ${TOMCAT_HOME}/bin/catalina.sh run
+          /usr/local/bin/dockerize \
+          ${TOMCAT_HOME}/bin/catalina.sh run
     fi
 
 else

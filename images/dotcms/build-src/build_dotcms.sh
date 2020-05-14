@@ -24,7 +24,7 @@ build_by_commit() {
     mkdir -p /build/src && cd /build/src
 
     cd /build/src/core
-    git clean -f -d 
+    git clean -f -d
     git pull
     
     echo "Checking out commit/tag/branch: $1"

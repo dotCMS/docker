@@ -6,7 +6,11 @@ source /srv/utils/config-defaults.sh
 
 
 echo "Database config ...."
-[[ -z "${PROVIDER_DB_DNSNAME}" ]] && PROVIDER_DB_DRIVER="POSTGRES"
+if [[ -z "${PROVIDER_DB_DNSNAME}" ]]; then
+  PROVIDER_DB_DRIVER="H2"
+else
+  PROVIDER_DB_DRIVER=$(echo $PROVIDER_DB_DRIVER | tr '[:lower:]' '[:upper:]')
+fi
 
 case "$PROVIDER_DB_DRIVER" in 
 
