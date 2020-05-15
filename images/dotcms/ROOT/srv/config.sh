@@ -13,4 +13,4 @@ source /srv/92-loadbalance-config.sh
 source /srv/80-install-plugins.sh
 source /srv/90-dockerize-config.sh
 source /srv/91-custom-post-template.sh
-
+source /srv/95-custom-starter-zip.sh
