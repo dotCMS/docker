@@ -30,6 +30,11 @@ amount of resources needed to effeciently handle system load.
 3. These commands will stop all containers and docker networks that were started; however, the data has been persisted in named volumes.
 4. The command ```docker volume ls``` will list all of the docker volumes.  If you wish to remove volumes, you can use the ```docker volume rm ... ``` syntax.
 
-## kubernetes
-For a complete kubernetes example, please refer to demo located here:  [https://github.com/brentgriffin/2018BootcampK8sDemo](https://github.com/brentgriffin/2018BootcampK8sDemo)
+## Notes:
+Running any containerized environment is complex.  Configuration is REQUIRED to secure and maximize the scaleability of dotCMS running in such an environment.  In order to do this, we recommend reading more about the dotCMS docker images here:
+https://dotcms.com/docs/latest/docker
+
+
+## Kubernetes
+For a complete kubernetes example, please refer to the example located here: https://github.com/dotCMS/dotCMS-K8
 
