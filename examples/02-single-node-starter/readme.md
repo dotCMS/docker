@@ -1,7 +1,6 @@
-# Demo Reference Implementation
+# Starter Site Example
 
-This reference implementation demonstrates how the dotCMS provided containers can be configured to function together in a simple demo configuration.  This configuration only
-has two services - one service for dotCMS itself and one for the DB server.
+This docker-compose example works like the `01-single-node-empty` example except it preloads all the data and content that is found on the dotCMS demo site.  It provides 3 services, a Postgres DB server, an Elasticsearch Server and a dotCMS server.
 
 A valid license is NOT required for this configuration to work properly; however, if you want to mount a valid license pack into the dotCMS image, you can do that by replacing this line: 
 ```#- [serverpath]/license.zip:/data/shared/assets/license.zip```
@@ -12,7 +11,7 @@ with a line like:
 ```
 where the path before the colon points to the license pack on the host filesystem.
 
-You should have at least 2GB of RAM dedicated to Docker for both containers to run.
+You should have at least 4GB of RAM dedicated to Docker for the containers to run.
 This configuration is not recommended for production use. 
 
 ## docker-compose
