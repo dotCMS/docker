@@ -1,9 +1,12 @@
-# Single Node Reference Implementation
+# Single Node with HA Proxy
 
-This reference implementation demonstrates how the dotCMS provided containers can be configured to function together on a single host node.  This configuration uses internal
-caching only (no external hazelcast node) and a single external ElasticSearch node.
+This reference implementation demonstrates how the dotCMS can be configured for HA/Load balancing.  It provides an pre-tuned HA proxy instance that will load balance incoming traffic to the configured dotCMS nodes.
 
-For this configuration to work properly, you need to have a valid license pack mounted into the dotCMS image.  You can do that by replacing this line: 
+
+If you are looking to scale this configuration beyond 1 node, you will need to have a valid license pack mounted into the dotCMS image.   If you need a trial license, you can request one here:
+
+
+ To add this license to your instances, you can upload the license pack into dotCMS in the System > Configuration > Licensing screen to script this at startup, you can replace this line: 
 ```#- [serverpath]/license.zip:/data/shared/assets/license.zip```
 
 with a line like:
