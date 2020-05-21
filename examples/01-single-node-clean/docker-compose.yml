@@ -34,7 +34,7 @@ services:
       - es_net
 
   dotcms:
-    image: dotcms/dotcms:5.3.0-prerelease
+    image: dotcms/dotcms:5.3.0
     environment:
       "CMS_HEAP_SIZE": '1g'
       "CMS_JAVA_OPTS": '-XX:+PrintFlagsFinal'
