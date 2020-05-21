@@ -1,4 +1,4 @@
-# Starter Site Example
+# Demo Site Example
 
 This docker-compose example works like the `01-single-node-empty` example except it preloads all the data and content that is found on the dotCMS demo site.  It provides 3 services, a Postgres DB server, an Elasticsearch Server and a dotCMS server.
 
