@@ -26,10 +26,9 @@ for OVERRIDEFILE in $(find . -type f); do
     echo $OVERRIDEFILE
     [[ ! -d "${TOMCAT_HOME}/webapps/ROOT/$(dirname $OVERRIDEFILE)" ]] && mkdir -p "${TOMCAT_HOME}/webapps/ROOT/$(dirname $OVERRIDEFILE)"
 
-    if [[ "$(basename $OVERRIDEFILE)" == "hazelcast-client.xml" ]]; then
-        cp "$OVERRIDEFILE" /srv/bin/system/src-conf/hazelcast-client.xml
-        echo "/srv/bin/system/src-conf/hazelcast-client.xml" >>/srv/config/templatable.txt
-        #echo "/srv/bin/system/src-conf/hazelcast-client.xml" >>/srv/container-config/templatable.txt
+    if [[ "$(dirname $OVERRIDEFILE)" == "./WEB-INF/classes" ]]; then
+        cp "$OVERRIDEFILE" /srv/bin/system/src-conf/"$(basename $OVERRIDEFILE)"
+        echo "/srv/bin/system/src-conf/$(basename $OVERRIDEFILE)" >>/srv/config/templatable.txt
     fi
 
     cp "$OVERRIDEFILE" "${TOMCAT_HOME}/webapps/ROOT/$OVERRIDEFILE"
