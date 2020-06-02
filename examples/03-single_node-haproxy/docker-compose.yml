@@ -88,7 +88,7 @@ services:
       - es_net
 
   dotcms:
-    image: dotcms/dotcms:5.3.0
+    image: dotcms/dotcms:latest
     environment:
       "CMS_HEAP_SIZE": '2g'
       "CMS_JAVA_OPTS": '-XX:+PrintFlagsFinal'
