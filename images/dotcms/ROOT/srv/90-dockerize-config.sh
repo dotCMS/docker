@@ -10,7 +10,7 @@ find /srv/plugins -mindepth 2 -maxdepth 2 -type f -name config-templatable.txt -
 for template in $( cat /srv/config/templatable.txt |sort -u ); do
     template_evaled=$( eval echo "${template}" )
     echo "Adding template \"${template_evaled}\""
-     DOCKERIZE_TEMPLATES="${DOCKERIZE_TEMPLATES} -template ${template_evaled}:${template_evaled}"
+    DOCKERIZE_TEMPLATES="${DOCKERIZE_TEMPLATES} -template ${template_evaled}:${template_evaled}"
 done
 
 if [[ -e /srv/config/settings.ini ]]; then
