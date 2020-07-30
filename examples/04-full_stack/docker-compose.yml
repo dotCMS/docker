@@ -162,7 +162,7 @@ services:
       "CMS_HEAP_SIZE": '2g'
       "CMS_JAVA_OPTS": '-XX:+PrintFlagsFinal'
       "PROVIDER_DB_DNSNAME": 'db'
-      "PROVIDER_ELASTICSEARCH_DNSNAMES": 'elasticsearch'
+      "PROVIDER_ELASTICSEARCH_ENDPOINTS": 'https://elasticsearch:9200'
       "ES_ADMIN_PASSWORD": 'admin'
     depends_on:
       - elasticsearch
