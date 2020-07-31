@@ -164,7 +164,6 @@ services:
       "PROVIDER_DB_DNSNAME": 'db'
       "PROVIDER_ELASTICSEARCH_ENDPOINTS": 'https://elasticsearch:9200'
       "ES_ADMIN_PASSWORD": 'admin'
-      "PROVIDER_ELASTICSEARCH_ENDPOINTS": 'https://elasticsearch:9200, https://elasticsearch-master2:9200, https://elasticsearch-master3:9200'
     depends_on:
       - elasticsearch
       - elasticsearch-master2
