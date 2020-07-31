@@ -81,7 +81,6 @@ services:
       "PROVIDER_ELASTICSEARCH_SVC_DELAY_STEP": '1'
       "PROVIDER_ELASTICSEARCH_SVC_DELAY_MAX": '2'
       "ES_ADMIN_PASSWORD": 'admin'
-      "PROVIDER_ELASTICSEARCH_ENDPOINTS": 'https://elasticsearch:9200'
       discovery.type: single-node
     volumes:
       - esdata:/usr/share/elasticsearch/data
