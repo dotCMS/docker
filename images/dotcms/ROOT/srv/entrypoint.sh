@@ -8,6 +8,11 @@ source /srv/config.sh
 
 if [[ "${1}" == "dotcms" || -z "${1}" ]]; then
 
+
+    echo "building entropy"
+    dd if=/dev/zero of=/tmp/entropyTempfile bs=1M count=200 && find / -size +1k && ls -R / && rm /tmp/entropyTempfile && sync
+
+
     echo "Starting dotCMS ..."
 
     [[ -f /srv/TOMCAT_VERSION ]] && TOMCAT_VERSION=$( cat /srv/TOMCAT_VERSION )
