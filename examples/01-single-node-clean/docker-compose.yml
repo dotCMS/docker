@@ -14,20 +14,12 @@ services:
   elasticsearch:
     image: amazon/opendistro-for-elasticsearch:1.6.0
     environment:
-      - cluster.name=odfe-cluster
-      - node.name=odfe-node1
-      - discovery.seed_hosts=localhost
-      - cluster.initial_master_nodes=odfe-node1
+      - cluster.name=elasticsearch-cluster
+      - node.name=elasticsearch-node1
+      - discovery.type=single-node
       - data
       - bootstrap.memory_lock=true 
       - "ES_JAVA_OPTS=-Xmx1G " 
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-      nofile:
-        soft: 65536
-        hard: 65536
     volumes:
       - esdata:/usr/share/elasticsearch/data
     networks:
@@ -37,7 +29,6 @@ services:
     image: dotcms/dotcms:latest
     environment:
       "CMS_HEAP_SIZE": '1g'
-      "CMS_JAVA_OPTS": '-XX:+PrintFlagsFinal'
       "PROVIDER_DB_DNSNAME": 'db'
       "PROVIDER_ELASTICSEARCH_ENDPOINTS": 'https://elasticsearch:9200'
       "ES_ADMIN_PASSWORD": 'admin'
