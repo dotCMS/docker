@@ -63,7 +63,7 @@ docker run -it -p 8080:8080  --rm dotcms-test
 
 
 # Multi-Architecture Building
-dotCMS supports building images that target both amd64 and arm64 architecture.  To enable multiarch building, you need to use `docker buildx` and have defined a new builder (you might need to enable "experimental" features in order to enable `docker buildx`).   You can see what buildx builders you have available by doing a `ls`:
+As of v.5.3.9, dotCMS supports building images that target both amd64 and arm64 architecture.  To enable multiarch building, you need to use `docker buildx` and have defined a new builder (you might need to enable "experimental" features in order to enable `docker buildx`). If you have `buildx` installed, you can see what buildx builders you have available by doing a `ls`:
 
 ```
 docker buildx ls
@@ -73,7 +73,6 @@ To create and use a new multiarch builder run:
 ```
 docker buildx create --name multiarch
 docker buildx use multiarch
-
 ```
 
 At this point, you can use `buildx` to build your image and target the platform(s) you want to build for.  Mostly, the same arguements apply, though `buildx` also allows you to immediatly push your new image to docker hub after it is built.
