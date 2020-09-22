@@ -12,14 +12,16 @@ volumes:
 
 services:
   elasticsearch:
-    image: amazon/opendistro-for-elasticsearch:1.6.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.1
     environment:
-      - cluster.name=elasticsearch-cluster
-      - node.name=elasticsearch-node1
+      - cluster.name=elastic-cluster
       - discovery.type=single-node
       - data
-      - bootstrap.memory_lock=true 
-      - "ES_JAVA_OPTS=-Xmx1G " 
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xmx1G "
+    #ports:
+      #- 9200:9200
+      #- 9600:9600
     volumes:
       - esdata:/usr/share/elasticsearch/data
     networks:
@@ -48,7 +50,7 @@ services:
 
   db:
     image: postgres:11
-    command: postgres -c 'max_connections=500' -c 'shared_buffers=128MB'
+    command: postgres -c 'max_connections=400' -c 'shared_buffers=128MB'
     environment:
         "POSTGRES_USER": 'dotcmsdbuser'
         "POSTGRES_PASSWORD": 'password'
