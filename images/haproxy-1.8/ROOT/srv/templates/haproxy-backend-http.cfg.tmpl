@@ -11,8 +11,8 @@ backend dotcms_http
     stick-table type string len 32 size 10000 expire 1h
     stick store-response res.cook(JSESSIONID)
     stick match req.cook(JSESSIONID)
-    {{ with .Env.CMS_BACKEND_SERVERS }}{{ range $index, $server := split . "," }}    
-        server dotcms_{{ $server }}_{{ $http_port }} {{ $server }}:{{ $http_port }} verify none check
+    {{ with .Env.CMS_BACKEND_SERVERS }}{{ range $index, $server := split . "," }}
+        server dotcms_{{ $server }}_{{ $http_port }} {{ $server }}:{{ $http_port }} check
     {{ end }}{{ end }}
 
     {{ if .Env.HAPROXY_MAINTENANCE_PAGE }}
