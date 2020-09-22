@@ -40,13 +40,6 @@ RUN apk --no-cache upgrade \
 
 RUN apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
 
-
-
-# Update java security preferences for ARM
-#RUN sed -i 's/NativePRNGBlocking:SUN/NativePRNGNonBlocking:SUN/g'  /usr/lib/jvm/default-jvm/jre/lib/security/java.security
-#RUN sed -i 's/random/urandom/g'  /usr/lib/jvm/default-jvm/jre/lib/security/java.security
-
-
 # Download and build dockerize distributed under MIT license (https://github.com/jwilder/dockerize)
 RUN wget --quiet https://github.com/jwilder/dockerize/archive/v0.6.1.tar.gz \
     && tar -C / -xzf v0.6.1.tar.gz  \
