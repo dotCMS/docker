@@ -50,8 +50,8 @@ frontend http
 
 {{ if isTrue .Env.HAPROXY_TLS_ENABLE }}
 frontend https
-    bind  *:8443  ssl crt {{ .Env.HAPROXY_CERT_PATH }} alpn h2,http/1.1
-
+    bind  *:8443  ssl crt {{ .Env.HAPROXY_CERT_PATH }} alpn http/1.1
+    mode http
     filter compression
 
     default_backend dotcms_https

@@ -1,22 +1,30 @@
-FROM haproxy:1.8-alpine
+FROM dotcms/haproxy-seed
 
 LABEL com.dotcms.contact "support@dotcms.com"
 LABEL com.dotcms.vendor "dotCMS LLC"
-LABEL com.dotcms.description "dotCMS Content Management System"
+LABEL com.dotcms.description "dotCMS HAProxy 1.8"
 
 RUN rm /docker-entrypoint.sh
 
 WORKDIR /
 
 RUN apk --no-cache upgrade \
-    && apk add --no-cache bash openssl ca-certificates gnupg grep tini s6-dns \
+    && apk add --no-cache bash openssl ca-certificates gnupg grep tini s6-dns go git gcc musl-dev libc6-compat \
     && update-ca-certificates
 
-ENV DOCKERIZE_VERSION v0.6.0
-RUN wget --quiet https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+# Download and build dockerize distributed under MIT license (https://github.com/jwilder/dockerize)
+RUN wget --quiet https://github.com/jwilder/dockerize/archive/v0.6.1.tar.gz \
+    && tar -C / -xzf v0.6.1.tar.gz  \
+    && cd /dockerize-0.6.1 \
+    && go get github.com/hpcloud/tail \
+    && go get github.com/jwilder/gojq \
+    && go get golang.org/x/net/context \
+    && go build \
+    && cp dockerize-0.6.1 /usr/local/bin/dockerize \
+    && chmod a+x /usr/local/bin/dockerize
 
+RUN rm v0.6.1.tar.gz
+RUN apk del  git gcc musl-dev
 
 COPY ROOT/ /
 RUN mkdir -p /srv/config

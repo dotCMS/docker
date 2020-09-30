@@ -12,6 +12,7 @@ ARG BUILD_FROM=COMMIT
 #  Value resolved in the context of $BUILD_FROM
 ARG BUILD_ID=HEAD
 
+
 WORKDIR /srv
 
 # dotCMS core distributed under GPLv3 license (https://github.com/dotCMS/core/blob/master/license.txt)
@@ -27,24 +28,30 @@ RUN chmod -R 666 /srv && find /srv/ -type d -exec chmod a+x {} \;
 
 # OpenJDK distributed under GPLv2+Oracle Classpath Exception license (http://openjdk.java.net/legal/gplv2+ce.html)
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
-FROM openjdk:8-jdk-alpine
+#ARG ARCH=arm64v8
+
+FROM alpine:3.11
 
 WORKDIR /srv
 
 RUN apk --no-cache upgrade \
-    && apk add --no-cache bash openssl ca-certificates gnupg grep sed tini nss s6-dns \
+    && apk add --no-cache bash openssl ca-certificates gnupg grep sed tini nss s6-dns openjdk8 go git gcc musl-dev libc6-compat tomcat-native curl \
     && update-ca-certificates 
 
-RUN apk --no-cache add libc6-compat tomcat-native curl && apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
+RUN apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
 
-# This is a nasty hack for libjsass, Alpine 3.9 no longer has a deprecated symlink in /lib
-RUN [ ! -e /lib/ld-linux-x86-64.so.2 ] &&  ln -s $(readlink /lib64/ld-linux-x86-64.so.2) /lib/ld-linux-x86-64.so.2 || :
-
-# Dockerize distributed under MIT license (https://github.com/jwilder/dockerize)
-ENV DOCKERIZE_VERSION v0.6.0
-RUN wget --quiet https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && tar -xzf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz -C /usr/local/bin \
-    && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+# Download and build dockerize distributed under MIT license (https://github.com/jwilder/dockerize)
+RUN wget --quiet https://github.com/jwilder/dockerize/archive/v0.6.1.tar.gz \
+    && tar -C / -xzf v0.6.1.tar.gz  \
+    && cd /dockerize-0.6.1 \
+    && go get github.com/hpcloud/tail \
+    && go get github.com/jwilder/gojq \
+    && go get golang.org/x/net/context \
+    && go build \
+    && cp dockerize-0.6.1 /usr/local/bin/dockerize \
+    && chmod a+x /usr/local/bin/dockerize
+    
+RUN apk del  git gcc musl-dev go
 
 COPY --from=build-cms /srv/ /srv/
 COPY ROOT/ /

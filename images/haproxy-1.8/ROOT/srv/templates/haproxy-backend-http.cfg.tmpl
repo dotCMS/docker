@@ -8,9 +8,12 @@ backend dotcms_http
     http-reuse aggressive
     option http-server-close
     option forceclose
-    cookie BACKENDID insert indirect nocache
-{{ with .Env.CMS_BACKEND_SERVERS }}{{ range $index, $server := split . "," }}    server dotcms_{{ $server }}_{{ $http_port }} {{ $server }}:{{ $http_port }} cookie {{ $server }} check
-{{ end }}{{ end }}
+    stick-table type string len 32 size 10000 expire 1h
+    stick store-response res.cook(JSESSIONID)
+    stick match req.cook(JSESSIONID)
+    {{ with .Env.CMS_BACKEND_SERVERS }}{{ range $index, $server := split . "," }}
+        server dotcms_{{ $server }}_{{ $http_port }} {{ $server }}:{{ $http_port }} check
+    {{ end }}{{ end }}
 
     {{ if .Env.HAPROXY_MAINTENANCE_PAGE }}
     errorfile 503 {{ .Env.HAPROXY_MAINTENANCE_PAGE }}  
