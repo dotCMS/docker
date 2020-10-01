@@ -30,15 +30,18 @@ RUN chmod -R 666 /srv && find /srv/ -type d -exec chmod a+x {} \;
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
 #ARG ARCH=arm64v8
 
-FROM alpine:3.11
+FROM openjdk:8-jdk-alpine
 
 WORKDIR /srv
 
 RUN apk --no-cache upgrade \
-    && apk add --no-cache bash openssl ca-certificates gnupg grep sed tini nss s6-dns openjdk8 go git gcc musl-dev libc6-compat tomcat-native curl \
+    && apk add --no-cache bash openssl ca-certificates gnupg grep sed tini nss s6-dns go git gcc musl-dev libc6-compat tomcat-native curl \
     && update-ca-certificates 
 
 RUN apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
+
+# This is a nasty hack for libjsass, Alpine 3.9 no longer has a deprecated symlink in /lib
+RUN [ ! -e /lib/ld-linux-x86-64.so.2 ] &&  ln -s $(readlink /lib64/ld-linux-x86-64.so.2) /lib/ld-linux-x86-64.so.2 || :
 
 # Download and build dockerize distributed under MIT license (https://github.com/jwilder/dockerize)
 RUN wget --quiet https://github.com/jwilder/dockerize/archive/v0.6.1.tar.gz \
@@ -50,8 +53,12 @@ RUN wget --quiet https://github.com/jwilder/dockerize/archive/v0.6.1.tar.gz \
     && go build \
     && cp dockerize-0.6.1 /usr/local/bin/dockerize \
     && chmod a+x /usr/local/bin/dockerize
-    
-RUN apk del  git gcc musl-dev go
+
+RUN cd / && rm -rf  /dockerize-0.6.1
+
+RUN apk del -r --purge git gcc musl-dev go 
+
+
 
 COPY --from=build-cms /srv/ /srv/
 COPY ROOT/ /
