@@ -50,7 +50,9 @@ RUN wget --quiet https://github.com/jwilder/dockerize/archive/v0.6.1.tar.gz \
     && go build \
     && cp dockerize-0.6.1 /usr/local/bin/dockerize \
     && chmod a+x /usr/local/bin/dockerize
-    
+
+RUN cd / && rm -rf  /dockerize-0.6.1
+
 RUN apk del  git gcc musl-dev go
 
 COPY --from=build-cms /srv/ /srv/
