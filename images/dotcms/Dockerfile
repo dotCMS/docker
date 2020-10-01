@@ -40,6 +40,9 @@ RUN apk --no-cache upgrade \
 
 RUN apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
 
+# This is a nasty hack for libjsass, Alpine 3.9 no longer has a deprecated symlink in /lib
+RUN [ ! -e /lib/ld-linux-x86-64.so.2 ] &&  ln -s $(readlink /lib64/ld-linux-x86-64.so.2) /lib/ld-linux-x86-64.so.2 || :
+
 # Download and build dockerize distributed under MIT license (https://github.com/jwilder/dockerize)
 RUN wget --quiet https://github.com/jwilder/dockerize/archive/v0.6.1.tar.gz \
     && tar -C / -xzf v0.6.1.tar.gz  \
@@ -53,7 +56,9 @@ RUN wget --quiet https://github.com/jwilder/dockerize/archive/v0.6.1.tar.gz \
 
 RUN cd / && rm -rf  /dockerize-0.6.1
 
-RUN apk del  git gcc musl-dev go
+RUN apk del -r --purge git gcc musl-dev go 
+
+
 
 COPY --from=build-cms /srv/ /srv/
 COPY ROOT/ /
