@@ -1,8 +1,8 @@
 FROM bitnami/postgresql:12
 
-COPY ./sub/postgresql.conf /opt/bitnami/postgresql/conf/postgresql.conf
+COPY ./sub/postgresql.conf /tmp/postgresql.conf
 
-#RUN chmod a+r /opt/bitnami/postgresql/conf/postgresql.conf
+RUN cat /tmp/postgresql.conf > /opt/bitnami/postgresql/conf/postgresql.conf
 
 USER 1001
 ENTRYPOINT [ "/opt/bitnami/scripts/postgresql/entrypoint.sh" ]
