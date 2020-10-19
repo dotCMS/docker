@@ -19,6 +19,13 @@ This image is based off the default postgresl 12 image.  To add to your compose:
 
 To build:
 ```
-docker build --build-arg pgdata_home=/pgdata -t dotcms/postgres .
+docker build --build-arg pgdata_home=/pgdata -t dotcms/postgres12 .
 ```
+
+Multiarch build:
+```
+docker buildx build --platform linux/amd64,linux/arm64 --pull --push --build-arg pgdata_home=/pgdata -t dotcms/postgres:12 .
+
+```
+
 
