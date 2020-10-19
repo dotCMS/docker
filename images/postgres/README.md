@@ -1,6 +1,9 @@
 ## dotcms/postgres docker image
 ---
-This image is based off the default postgresl 12 image.  To add to your compose:
+This image is based off the default postgresl 12 image.  By default, it stores data under `/pgdata` folder, which should be mounted or mapped to a named drive.
+
+
+To add to your compose:
 
 ```
   db:
@@ -11,7 +14,7 @@ This image is based off the default postgresl 12 image.  To add to your compose:
         "POSTGRES_PASSWORD": 'password'
         "POSTGRES_DB": 'dotcms'
     volumes:
-      - dbdata:/var/lib/postgresql/data
+      - dbdata:/pgdata
     networks:
       - db_net
 ```
