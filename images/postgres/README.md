@@ -8,7 +8,7 @@ To add to your compose:
 ```
   db:
     image: dotcms/postgres
-    command: postgres -c 'max_connections=400' -c 'shared_buffers=128MB'
+    command: postgres -c 'max_connections=400' -c 'shared_buffers=512MB' -c 'effective_cache_size=1536MB' -c 'maintenance_work_mem=128MB'
     environment:
         "POSTGRES_USER": 'dotcmsdbuser'
         "POSTGRES_PASSWORD": 'password'
