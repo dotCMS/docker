@@ -1,4 +1,4 @@
-## dotCMS Postgres docker image
+## dotcms/postgres docker image
 ---
 This image is based off the default postgresl 12 image.  To add to your compose:
 
