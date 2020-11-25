@@ -34,7 +34,7 @@ services:
       "PROVIDER_DB_DNSNAME": 'db'
       "PROVIDER_ELASTICSEARCH_ENDPOINTS": 'http://elasticsearch:9200'
       "ES_ADMIN_PASSWORD": 'admin'
-      "CUSTOM_STARTER_URL": 'https://repo.dotcms.com/artifactory/libs-release-local/com/dotcms/starter/20200925/starter-20200925.zip'
+      "CUSTOM_STARTER_URL": 'https://repo.dotcms.com/artifactory/libs-release-local/com/dotcms/starter/20201119/starter-20201119.zip'
     depends_on:
       - elasticsearch
       - db
