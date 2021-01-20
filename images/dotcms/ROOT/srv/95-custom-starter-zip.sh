@@ -14,7 +14,7 @@ else
 		mkdir -p  /data/shared
 		wget -O /data/shared/$CUSTOM_STARTER $CUSTOM_STARTER_URL || echo ""
 		if [[ -s /data/shared/$CUSTOM_STARTER ]] ; then
-			cp -af /data/shared/$CUSTOM_STARTER /srv/dotserver/tomcat-8.5.32/webapps/ROOT/starter.zip
+			cp -af /data/shared/$CUSTOM_STARTER ${TOMCAT_HOME}/webapps/ROOT/starter.zip
 		else
 			rm /data/shared/$CUSTOM_STARTER
 			echo "No starter downloaded, skipping"
