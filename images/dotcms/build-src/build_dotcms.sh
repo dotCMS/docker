@@ -38,6 +38,7 @@ build_by_commit() {
 set_tomcat_dir() {
     TOMCAT_VERSION=$(find /srv/dotserver/ -type d -name tomcat-* | grep -oP "(?<=tomcat-)[0-9]{1}\.[0-9]{1}\.[0-9]+$" | head -n 1)
     [[ -z "${TOMCAT_VERSION}" ]] && echo "ERROR: Unable to determine Tomcat version" && exit 1
+    echo "Using TOMCAT_VERSION=${TOMCAT_VERSION}"
     echo ${TOMCAT_VERSION} >/srv/TOMCAT_VERSION
 }
 
