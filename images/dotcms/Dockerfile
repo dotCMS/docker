@@ -12,12 +12,14 @@ ARG BUILD_FROM=COMMIT
 #  Value resolved in the context of $BUILD_FROM
 ARG BUILD_ID=HEAD
 
+# Tomcat version
+ARG TOMCAT_VERSION
 
 WORKDIR /srv
 
 # dotCMS core distributed under GPLv3 license (https://github.com/dotCMS/core/blob/master/license.txt)
 COPY build-src/ /build/
-RUN chmod 500 /build/build_dotcms.sh && /build/build_dotcms.sh ${BUILD_FROM} ${BUILD_ID}
+RUN chmod 500 /build/build_dotcms.sh && /build/build_dotcms.sh ${BUILD_FROM} ${BUILD_ID} ${TOMCAT_VERSION}
 
 RUN mkdir -p /srv/utils /srv/templates /srv/config /srv/home
 RUN chmod -R 666 /srv && find /srv/ -type d -exec chmod a+x {} \;
@@ -36,7 +38,7 @@ WORKDIR /srv
 
 RUN apk --no-cache upgrade \
     && apk add --no-cache bash openssl ca-certificates gnupg grep sed tini nss s6-dns go libpq git gcc musl-dev libc6-compat tomcat-native curl \
-    && update-ca-certificates 
+    && update-ca-certificates
 
 RUN apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
 
@@ -56,7 +58,7 @@ RUN wget --quiet https://github.com/jwilder/dockerize/archive/v0.6.1.tar.gz \
 
 RUN cd / && rm -rf  /dockerize-0.6.1
 
-RUN apk del -r --purge git gcc musl-dev go 
+RUN apk del -r --purge git gcc musl-dev go
 
 
 
