@@ -37,7 +37,7 @@ build_by_commit() {
 }
 
 set_tomcat_dir() {
-  tomcat_versions=$(find /srv/dotserver/ -type d -name tomcat-* | grep -oP "(?<=tomcat-)[0-9]{1}\.[0-9]{1}\.[0-9]+$")
+  tomcat_versions=$(find /srv/dotserver/ -type d -name tomcat-* | grep -oP "(?<=tomcat-)[0-9]{1}\.[0-9]{1}\.[0-9]+$ | sort -k1.2n")
   echo "Found tomcat installations:
   ${tomcat_versions}"
 
@@ -50,7 +50,7 @@ set_tomcat_dir() {
       exit 1
     fi
   else
-    tomcat_version=$(find /srv/dotserver/ -type d -name tomcat-* | grep -oP "(?<=tomcat-)[0-9]{1}\.[0-9]{1}\.[0-9]+$" | tail -n 1)
+    tomcat_version=$(find /srv/dotserver/ -type d -name tomcat-* | grep -oP "(?<=tomcat-)[0-9]{1}\.[0-9]{1}\.[0-9]+$" | sort -k1.2n | tail -n 1)
     [[ -z "${tomcat_version}" ]] && echo "ERROR: Unable to determine Tomcat version" && exit 1
   fi
 
