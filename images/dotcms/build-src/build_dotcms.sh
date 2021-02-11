@@ -2,6 +2,8 @@
 
 set -e
 
+echo "Executing: $0 $@"
+
 build_source=$1
 build_id=$2
 tomcat_version=$3
@@ -25,11 +27,18 @@ build_by_commit() {
   mkdir -p /build/src && cd /build/src
 
   cd /build/src/core
+  git fetch --all --tags
   git clean -f -d
   git pull
 
   echo "Checking out commit/tag/branch: $1"
-  git checkout $1
+  if [[ ${is_release} == true ]]; then
+    echo "Executing: git checkout tags/${1} -b ${1}"
+    git checkout tags/${1} -b ${1}
+  else
+    echo "Executing: git checkout ${1}"
+    git checkout ${1}
+  fi
 
   cd dotCMS && ./gradlew clonePullTomcatDist createDistPrep -PuseGradleNode=false
   find ../dist/  -name "*.sh" -exec chmod 500 {} \;
@@ -37,9 +46,9 @@ build_by_commit() {
 }
 
 set_tomcat_dir() {
-  tomcat_versions=$(find /srv/dotserver/ -type d -name tomcat-* | grep -oP "(?<=tomcat-)[0-9]{1}\.[0-9]{1}\.[0-9]+$ | sort -k1.2n")
-  echo "Found tomcat installations:
-  ${tomcat_versions}"
+  tomcat_versions=$(find /srv/dotserver/ -type d -name tomcat-* | grep -oP "(?<=tomcat-)[0-9]{1}\.[0-9]{1}\.[0-9]+$" | sort -n)
+  display_tomcat_version=$(echo ${tomcat_versions} | tr '\n' ' ')
+  echo "Found tomcat installations: ${display_tomcat_version}"
 
   if [[ -n "${tomcat_version}" ]]; then
     echo "Provided Tomcat version: ${tomcat_version}"
@@ -50,7 +59,7 @@ set_tomcat_dir() {
       exit 1
     fi
   else
-    tomcat_version=$(find /srv/dotserver/ -type d -name tomcat-* | grep -oP "(?<=tomcat-)[0-9]{1}\.[0-9]{1}\.[0-9]+$" | sort -k1.2n | tail -n 1)
+    tomcat_version=$(find /srv/dotserver/ -type d -name tomcat-* | grep -oP "(?<=tomcat-)[0-9]{1}\.[0-9]{1}\.[0-9]+$" | sort -n | tail -n 1)
     [[ -z "${tomcat_version}" ]] && echo "ERROR: Unable to determine Tomcat version" && exit 1
   fi
 

@@ -7,16 +7,14 @@ LABEL com.dotcms.contact "info@dotcms.com"
 LABEL com.dotcms.vendor "dotCMS LLC"
 LABEL com.dotcms.description "dotCMS Content Management System"
 
-
 WORKDIR /srv
 
 # Build env dependencies
-RUN apk update && apk --no-cache add bash grep openssl git nodejs=10.14.2-r0 npm=10.14.2-r0  sed
-
+RUN apk update && apk --no-cache add bash grep openssl git nodejs=10.14.2-r0 npm=10.14.2-r0 sed
 
 RUN mkdir -p /build/src \
     && echo "Pulling dotCMS src" \
-    && cd /build/src && git clone https://github.com/dotCMS/core.git core \ 
+    && cd /build/src && git clone https://github.com/dotCMS/core.git core \
     && cd /build/src/core/dotCMS \
     && git gc --aggressive \
-    && ./gradlew  --no-daemon  downloadDependencies clonePullTomcatDist -PuseGradleNode=false
+    && ./gradlew  --no-daemon downloadDependencies clonePullTomcatDist -PuseGradleNode=false
