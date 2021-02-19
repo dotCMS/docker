@@ -2,7 +2,7 @@
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
 # dotCMS core distributed under GPLv3 license (https://github.com/dotCMS/core/blob/master/license.txt)
 #FROM adoptopenjdk/openjdk11:jdk-11.0.9.1_1-alpine as dotcms-seed
-FROM adoptopenjdk/openjdk11:jdk-11.0.9.1_1-alpine as dotcms-seed
+FROM openjdk:8-jdk-alpine as dotcms-seed
 
 
 LABEL com.dotcms.contact "info@dotcms.com"
@@ -13,7 +13,7 @@ LABEL com.dotcms.description "dotCMS Content Management System"
 WORKDIR /srv
 
 # Build env dependencies
-RUN apk update && apk --no-cache add bash grep openssl git nodejs=12.20.1-r0 npm=12.20.1-r0  sed
+RUN apk update && apk --no-cache add bash grep openssl git nodejs=10.14.2-r0 npm=10.14.2-r0  sed
 
 
 RUN mkdir -p /build/src \
