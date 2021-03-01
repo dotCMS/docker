@@ -40,7 +40,7 @@ build_by_commit() {
     git checkout ${1}
   fi
 
-  cd dotCMS && ./gradlew clonePullTomcatDist createDistPrep -PuseGradleNode=false
+  cd dotCMS && ./gradlew --stacktrace clonePullTomcatDist createDistPrep -PuseGradleNode=false
   find ../dist/  -name "*.sh" -exec chmod 500 {} \;
   mv ../dist/* "${build_target_dir}"
 }
