@@ -13,7 +13,7 @@ WORKDIR /srv
 
 # Build env dependencies
 #RUN apk update && apk --no-cache add bash grep openssl git nodejs=10.14.2-r0 npm=10.14.2-r0 sed curl
-RUN apk update && apk --no-cache add bash grep openssl git nodejs=12.20.1-r0 npm=12.20.1-r0  sed curl
+RUN apk update && apk --no-cache add bash grep openssl git nodejs=12.21.0-r0 npm=12.21.0-r0  sed curl
 
 
 RUN mkdir -p /build/src \
