@@ -36,7 +36,7 @@ FROM openjdk:8-jdk-alpine
 
 WORKDIR /srv
 
-RUN apk --no-cache upgrade \
+RUN apk --no-cache update && apk --no-cache upgrade \
     && apk add --no-cache bash openssl ca-certificates gnupg grep sed tini nss s6-dns go libpq git gcc musl-dev libc6-compat tomcat-native curl \
     && update-ca-certificates
 
@@ -83,7 +83,7 @@ ENV SERVICE_DELAY_DEFAULT_MAX 30
 # Direct connect
 EXPOSE 8080
 # Connect from proxy, HTTP/80, non-secure
-EXPOSE 8081
+EXPOSE 8443
 # Connect from proxy, HTTPS/443, secure
 EXPOSE 8082
 # Java Debugging - must be configured via CMS_JAVA_OPTS

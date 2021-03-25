@@ -28,7 +28,7 @@ services:
       - es_net
 
   dotcms:
-    image: dotcms/dotcms:latest
+    image: dotcms-test
     environment:
       "CMS_HEAP_SIZE": '1g'
       "PROVIDER_DB_DNSNAME": 'db'
@@ -45,8 +45,8 @@ services:
       - db_net
       - es_net
     ports:
-      - "8080:8081"
-      - "8443:8082"
+      - "8080:8080"
+      - "8443:8443"
 
   db:
     image: postgres:11
