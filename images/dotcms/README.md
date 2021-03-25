@@ -83,6 +83,6 @@ docker buildx use multiarch
 At this point, you can use `buildx` to build your image and target the platform(s) you want to build for.  Mostly, the same arguements apply, though `buildx` also allows you to immediatly push your new image to docker hub after it is built.
 
 ```
-docker buildx build --platform linux/amd64,linux/arm64 --pull --push --build-arg BUILD_FROM=COMMIT --build-arg BUILD_ID=origin/master -t dotcms/dotcms:multiarch-test .
+docker buildx build --platform linux/amd64,linux/arm64 --pull --push --progress plain --build-arg BUILD_FROM=COMMIT --build-arg BUILD_ID=origin/release-5.3.8.4  -t dotcms/dotcms:5.3.8.4.aarch .
 
 ```

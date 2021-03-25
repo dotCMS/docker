@@ -13,7 +13,7 @@ ARG BUILD_FROM=COMMIT
 ARG BUILD_ID=HEAD
 
 # Tomcat version
-ARG TOMCAT_VERSION=""
+ARG TOMCAT_VERSION="5.3.8.4"
 
 WORKDIR /srv
 
@@ -76,6 +76,20 @@ RUN mkdir -p /data/shared/assets && mkdir -p /data/local/dotsecure/license && ch
 ENV SERVICE_DELAY_DEFAULT_MIN 1
 ENV SERVICE_DELAY_DEFAULT_STEP 3
 ENV SERVICE_DELAY_DEFAULT_MAX 30
+
+RUN echo "copying jars"
+
+
+# Update JARS to work with ARM compatiable JARs
+RUN rm /srv/dotserver/tomcat-8.5.32/webapps/ROOT/WEB-INF/lib/jsass*.jar
+RUN rm /srv/dotserver/tomcat-8.5.32/webapps/ROOT/WEB-INF/lib/dot.webp-imageio-core*.jar
+
+RUN wget --quiet https://repo.dotcms.com/artifactory/MavenCentral-cache/io/bit3/jsass/5.10.3/jsass-5.10.3.jar
+RUN wget --quiet https://repo.dotcms.com/artifactory/ext-release-local/com/dotcms/lib/dot.webp-imageio-core/0.1.5/dot.webp-imageio-core-0.1.5.jar
+
+
+RUN mv *.jar /srv/dotserver/tomcat-8.5.32/webapps/ROOT/WEB-INF/lib/
+RUN rm -rf /root
 
 #VOLUME /data/local
 
