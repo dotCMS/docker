@@ -29,9 +29,7 @@ RUN chmod -R 666 /srv && find /srv/ -type d -exec chmod a+x {} \;
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
 #ARG ARCH=arm64v8
 
-## FROM openjdk:8-jdk-alpine
 FROM adoptopenjdk/openjdk11:jdk-11.0.9.1_1-alpine
-## adoptopenjdk/openjdk11:jdk-11.0.9.1_1-alpine
 
 WORKDIR /srv
 
