@@ -8,7 +8,6 @@ LABEL com.dotcms.contact "info@dotcms.com"
 LABEL com.dotcms.vendor "dotCMS LLC"
 LABEL com.dotcms.description "dotCMS Content Management System"
 
-
 WORKDIR /srv
 
 # Build env dependencies
@@ -18,7 +17,7 @@ RUN apk update && apk --no-cache add bash grep openssl git nodejs=12.21.0-r0 npm
 
 RUN mkdir -p /build/src \
     && echo "Pulling dotCMS src" \
-    && cd /build/src && git clone https://github.com/dotCMS/core.git core \ 
+    && cd /build/src && git clone https://github.com/dotCMS/core.git core \
     && cd /build/src/core/dotCMS \
     && git gc --aggressive \
     && ./gradlew --no-daemon downloadDependencies clonePullTomcatDist -PuseGradleNode=false
