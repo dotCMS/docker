@@ -33,7 +33,7 @@ FROM openjdk:8-jdk-alpine
 
 WORKDIR /srv
 
-RUN apk --no-cache upgrade \
+RUN apk --no-cache update && apk upgrade \
     && apk add --no-cache bash openssl ca-certificates gnupg grep sed tini nss s6-dns go libpq git gcc musl-dev libc6-compat tomcat-native curl \
     && update-ca-certificates
 
@@ -75,6 +75,9 @@ ENV SERVICE_DELAY_DEFAULT_STEP 3
 ENV SERVICE_DELAY_DEFAULT_MAX 30
 
 #VOLUME /data/local
+
+## JDK upgrade does not take first run, needs to runs
+RUN  apk upgrade
 
 ## Ports
 # Direct connect
