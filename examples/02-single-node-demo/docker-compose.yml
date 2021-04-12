@@ -28,7 +28,7 @@ services:
       - es_net
 
   dotcms:
-    image: dotcms/dotcms:latest
+    image: dotcms/dotcms:master-java11
     environment:
       "CMS_HEAP_SIZE": '1g'
       "PROVIDER_DB_DNSNAME": 'db'
