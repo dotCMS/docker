@@ -21,7 +21,7 @@ if [[ -e /srv/config/settings.ini ]]; then
 fi
 
 echo "Applying config:"
-cat /srv/config/settings.ini | sed 's/^/  /g'
+cat /srv/config/settings.ini | sed 's/^/  /g' | sed 's/PASSWORD=.*/PASSWORD=<hidden>/g'
 
 rm /srv/config/settings.ini
 
