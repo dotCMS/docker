@@ -4,6 +4,15 @@ set -e
 
 source /srv/utils/config-defaults.sh
 
+case "$TOMCAT_VERSION}" in
+  '8.5.32' )
+    BYTE_BUDDY_VERSION='1.6.12'
+    ;;
+  *)
+    BYTE_BUDDY_VERSION='1.9.0'
+    ;;
+esac
+
 echo "dotCMS environment ...."
 # Default opts
 JAVA_OPTS="-Djava.awt.headless=true -Xverify:none -Dfile.encoding=UTF8 -server -XX:+DisableExplicitGC"
@@ -12,7 +21,7 @@ JAVA_OPTS="$JAVA_OPTS -XX:MaxMetaspaceSize=512m -Xms${CMS_HEAP_SIZE} -Xmx${CMS_H
 # GC opts
 JAVA_OPTS="$JAVA_OPTS -XX:+UseG1GC"
 # Agent opts
-JAVA_OPTS="$JAVA_OPTS -javaagent:${TOMCAT_HOME}/webapps/ROOT/WEB-INF/lib/byte-buddy-agent-1.6.12.jar"
+JAVA_OPTS="$JAVA_OPTS -javaagent:${TOMCAT_HOME}/webapps/ROOT/WEB-INF/lib/byte-buddy-agent-${BYTE_BUDDY_VERSION}.jar"
 # PDFbox cache location
 JAVA_OPTS="$JAVA_OPTS -Dpdfbox.fontcache=/data/local/dotsecure"
 
