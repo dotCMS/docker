@@ -34,7 +34,7 @@ FROM adoptopenjdk/openjdk11:alpine
 WORKDIR /srv
 
 RUN apk --no-cache update && apk upgrade \
-    && apk add --no-cache bash openssl ca-certificates gnupg grep sed tini nss s6-dns go libpq git gcc musl-dev libc6-compat tomcat-native curl \
+    && apk add --no-cache bash openssl ca-certificates gnupg grep sed tini nss s6-dns go libpq git gcc musl-dev tomcat-native curl \
     && update-ca-certificates
 
 RUN apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
