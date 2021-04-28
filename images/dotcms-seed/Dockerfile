@@ -1,7 +1,7 @@
 # OpenJDK distributed under GPLv2+Oracle Classpath Exception license (http://openjdk.java.net/legal/gplv2+ce.html)
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
 # dotCMS core distributed under GPLv3 license (https://github.com/dotCMS/core/blob/master/license.txt)
-FROM openjdk:8-jdk-alpine as dotcms-seed
+FROM adoptopenjdk/openjdk11:alpine as dotcms-seed
 
 LABEL com.dotcms.contact "info@dotcms.com"
 LABEL com.dotcms.vendor "dotCMS LLC"
