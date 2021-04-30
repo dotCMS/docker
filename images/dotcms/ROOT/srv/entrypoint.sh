@@ -23,7 +23,7 @@ if [[ "${1}" == "dotcms" || -z "${1}" ]]; then
 
     cd /srv/home
 
-    if [ ! -z "${WAIT_DB_FOR}" ]; then
+    if [ -n "${WAIT_DB_FOR}" ]; then
       echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
       echo "            Requested sleep of [${WAIT_DB_FOR}], waiting for the db?"
       echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
