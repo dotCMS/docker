@@ -82,6 +82,8 @@ RUN  apk upgrade
 ## Ports
 # Direct connect
 EXPOSE 8080
+# Direct connect for HTTPS, secure
+EXPOSE 8443
 # Connect from proxy, HTTP/80, non-secure
 EXPOSE 8081
 # Connect from proxy, HTTPS/443, secure

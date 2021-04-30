@@ -100,5 +100,6 @@ case "${build_source}" in
 esac
 
 mv ${build_target_dir}/* /srv/
+mv /build/src/core/dotCMS/src/curl-test /srv
 
 set_tomcat_dir
