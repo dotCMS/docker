@@ -3,3 +3,4 @@ license.dat
 *gitignore
 license.zip
 .DS_Store
+.idea/
