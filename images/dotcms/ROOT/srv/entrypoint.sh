@@ -35,7 +35,7 @@ if [[ "${1}" == "dotcms" || -z "${1}" ]]; then
     echo "DB Connect Test: ${DB_CONNECT_TEST}"
 
     if [[ ${DEBUG} == true ]]; then
-      export CATALINA_OPTS='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000'
+      export CATALINA_OPTS='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000'
     fi
 
     if [[ -n "$DB_CONNECT_TEST" ]]; then
