@@ -57,7 +57,8 @@ RUN cd / && rm -rf  /dockerize-0.6.1
 
 RUN apk del -r --purge git gcc musl-dev go
 
-
+ENV JAVA_VERSION 8u275
+ENV JAVA_ALPINE_VERSION 8.275.01-r0
 
 COPY --from=build-cms /srv/ /srv/
 COPY ROOT/ /
