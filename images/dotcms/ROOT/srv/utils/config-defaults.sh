@@ -21,7 +21,7 @@ TOMCAT_HOME=/srv/dotserver/tomcat-${TOMCAT_VERSION}
 : ${CMS_JAVA_OPTS:=""}
 
 # Maximum number of Tomcat Connector threadpool threads (shared across Connectors)
-: ${CMS_CONNECTOR_THREADS:="200"}
+: ${CMS_CONNECTOR_THREADS:="600"}
 
 # SMTP hostname for CMS
 : ${CMS_SMTP_HOST:="smtp"}
@@ -41,7 +41,7 @@ TOMCAT_HOME=/srv/dotserver/tomcat-${TOMCAT_VERSION}
 # IP or hostname of database server
 : ${PROVIDER_DB_DNSNAME:=""}
 
-# Database type, one of ["H2","POSTGRES","MYSQL","ORACLE","MSSQL"]
+# Database type, one of ["POSTGRES","MYSQL","ORACLE","MSSQL"]
 : ${PROVIDER_DB_DRIVER:="POSTGRES"}
 
 # JDBC-compliant URL to connect to DB (only needed to set custom options, PROVIDER_DB_DNSNAME & PROVIDER_DB_PORT must also be set or use defaults)
