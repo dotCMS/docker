@@ -1,6 +1,6 @@
 # OpenJDK distributed under GPLv2+Oracle Classpath Exception license (http://openjdk.java.net/legal/gplv2+ce.html)
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
-FROM dotcms/dotcms-seed:jdk11 as build-cms
+FROM dotcms/dotcms-seed:dotcms-seed-ubuntu-slim as build-cms
 
 LABEL com.dotcms.contact "support@dotcms.com"
 LABEL com.dotcms.vendor "dotCMS LLC"
@@ -29,18 +29,13 @@ RUN chmod -R 666 /srv && find /srv/ -type d -exec chmod a+x {} \;
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
 #ARG ARCH=arm64v8
 
-FROM adoptopenjdk/openjdk11:alpine
+FROM adoptopenjdk/openjdk11:jdk-11.0.11_9-ubuntu-slim
 
 WORKDIR /srv
 
-RUN apk --no-cache update && apk upgrade \
-    && apk add --no-cache bash openssl ca-certificates gnupg grep sed tini nss s6-dns go libpq git gcc musl-dev tomcat-native curl \
+RUN apt-get update -y \
+    && apt-get install -y ca-certificates gnupg tini libnss3-dev dnsutils golang libpq-dev gcc musl-dev curl wget git\
     && update-ca-certificates
-
-RUN apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
-
-# This is a nasty hack for libjsass, Alpine 3.9 no longer has a deprecated symlink in /lib
-RUN [ ! -e /lib/ld-linux-x86-64.so.2 ] &&  ln -s $(readlink /lib64/ld-linux-x86-64.so.2) /lib/ld-linux-x86-64.so.2 || :
 
 # Download and build dockerize distributed under MIT license (https://github.com/jwilder/dockerize)
 RUN wget --quiet https://github.com/jwilder/dockerize/archive/v0.6.1.tar.gz \
@@ -54,10 +49,6 @@ RUN wget --quiet https://github.com/jwilder/dockerize/archive/v0.6.1.tar.gz \
     && chmod a+x /usr/local/bin/dockerize
 
 RUN cd / && rm -rf  /dockerize-0.6.1
-
-RUN apk del -r --purge git gcc musl-dev go
-
-
 
 COPY --from=build-cms /srv/ /srv/
 COPY ROOT/ /
@@ -77,7 +68,6 @@ ENV SERVICE_DELAY_DEFAULT_MAX 30
 #VOLUME /data/local
 
 ## JDK upgrade does not take first run, needs to runs
-RUN  apk upgrade
 
 ## Ports
 # Direct connect
