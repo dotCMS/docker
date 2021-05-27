@@ -57,7 +57,7 @@ RUN cd / && rm -rf  /dockerize-0.6.1
 
 RUN apk del -r --purge git gcc musl-dev go
 
-
+ENV JAVA_HOME /usr/lib/jvm/default-jvm
 
 COPY --from=build-cms /srv/ /srv/
 COPY ROOT/ /
