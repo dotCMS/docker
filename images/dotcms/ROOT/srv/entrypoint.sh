@@ -23,20 +23,8 @@ if [[ "${1}" == "dotcms" || -z "${1}" ]]; then
 
     cd /srv/home
 
-    if [ ! -z "${WAIT_DB_FOR}" ]; then
-      echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-      echo "            Requested sleep of [${WAIT_DB_FOR}], waiting for the db?"
-      echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-      echo ""
-      sleep ${WAIT_DB_FOR}
-    fi
-
     DB_CONNECT_TEST="$(cat /tmp/DB_CONNECT_TEST | tr -d [:space:])"
     echo "DB Connect Test: ${DB_CONNECT_TEST}"
-
-    if [[ ${DEBUG} == true ]]; then
-      export CATALINA_OPTS='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000'
-    fi
 
     if [[ -n "$DB_CONNECT_TEST" ]]; then
         exec -- \

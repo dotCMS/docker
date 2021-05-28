@@ -6,10 +6,15 @@ source /srv/utils/discovery-include.sh
 source /srv/utils/config-defaults.sh
 
 echo "Merge Docker Config ...."
+[[ -f /srv/TOMCAT_VERSION ]] && TOMCAT_VERSION=$( cat /srv/TOMCAT_VERSION )
 # Overwrite Tomcat files
 cd /srv/templates/tomcat/OVERRIDE
+[[ -f ./conf/server-${TOMCAT_VERSION}.xml ]] && \
+  mv ./conf/server-${TOMCAT_VERSION}.xml ./conf/server.xml && \
+  rm ./conf/server-*.xml
 for OVERRIDEFILE in $(find . -type f); do
-    [[ ! -d "${TOMCAT_HOME}/$(dirname $OVERRIDEFILE)" ]] && mkdir -p "${TOMCAT_HOME}/$(dirname $OVERRIDEFILE)"
+    OVERRIDE_FOLDER=$(dirname $OVERRIDEFILE)
+    [[ ! -d "${TOMCAT_HOME}/${OVERRIDE_FOLDER}" ]] && mkdir -p "${TOMCAT_HOME}/${OVERRIDE_FOLDER}"
     cp "$OVERRIDEFILE" "${TOMCAT_HOME}/$OVERRIDEFILE"
     
     # TODO: Hazelcast session store
