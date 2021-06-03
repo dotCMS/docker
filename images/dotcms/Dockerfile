@@ -1,6 +1,6 @@
 # OpenJDK distributed under GPLv2+Oracle Classpath Exception license (http://openjdk.java.net/legal/gplv2+ce.html)
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
-FROM dotcms/dotcms-seed:jdk11 as build-cms
+FROM dotcms/dotcms-seed as build-cms
 
 LABEL com.dotcms.contact "support@dotcms.com"
 LABEL com.dotcms.vendor "dotCMS LLC"
@@ -29,12 +29,12 @@ RUN chmod -R 666 /srv && find /srv/ -type d -exec chmod a+x {} \;
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
 #ARG ARCH=arm64v8
 
-FROM alpine:3.13
+FROM openjdk:8-jdk-alpine
 
 WORKDIR /srv
 
 RUN apk --no-cache update && apk upgrade \
-    && apk add --no-cache bash openjdk11 openssl ca-certificates gnupg tzdata grep libc6-compat sed tini nss s6-dns go libpq git gcc musl-dev tomcat-native curl \
+    && apk add --no-cache bash openssl ca-certificates gnupg grep sed tini nss s6-dns go libpq git gcc musl-dev libc6-compat tomcat-native curl \
     && update-ca-certificates
 
 RUN apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
@@ -57,7 +57,7 @@ RUN cd / && rm -rf  /dockerize-0.6.1
 
 RUN apk del -r --purge git gcc musl-dev go
 
-ENV JAVA_HOME /usr/lib/jvm/default-jvm
+
 
 COPY --from=build-cms /srv/ /srv/
 COPY ROOT/ /
