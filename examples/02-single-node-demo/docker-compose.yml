@@ -46,7 +46,7 @@ services:
       - es_net
     ports:
       - "8080:8081"
-      - "8443:8082"
+      - "8443:8443"
 
   db:
     image: postgres:11
