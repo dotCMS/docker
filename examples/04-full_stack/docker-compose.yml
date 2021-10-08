@@ -95,7 +95,7 @@ services:
       - hz_net
 
   elasticsearch:
-    image: gcr.io/cicd-246518/es-open-distro:1.3.0
+    image: dotcms/es-open-distro:1.3.0
     environment:
       "PROVIDER_ELASTICSEARCH_HEAP_SIZE": '1500m'
       "PROVIDER_ELASTICSEARCH_DNSNAMES": 'elasticsearch'
@@ -115,7 +115,7 @@ services:
       - es_net
 
   elasticsearch-master2:
-    image: gcr.io/cicd-246518/es-open-distro:1.3.0
+    image: dotcms/es-open-distro:1.3.0
     environment:
       "PROVIDER_ELASTICSEARCH_HEAP_SIZE": '1024m'
       "PROVIDER_ELASTICSEARCH_DNSNAMES": 'elasticsearch'
@@ -136,7 +136,7 @@ services:
       - es_net
 
   elasticsearch-master3:
-    image: gcr.io/cicd-246518/es-open-distro:1.3.0
+    image: dotcms/es-open-distro:1.3.0
     environment:
       "PROVIDER_ELASTICSEARCH_HEAP_SIZE": '1024m'
       "PROVIDER_ELASTICSEARCH_DNSNAMES": 'elasticsearch'
