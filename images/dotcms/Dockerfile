@@ -29,13 +29,19 @@ RUN chmod -R 666 /srv && find /srv/ -type d -exec chmod a+x {} \;
 # Alpine Linux packages distributed under various licenses including GPL-3.0+ (https://pkgs.alpinelinux.org/packages)
 #ARG ARCH=arm64v8
 
-FROM adoptopenjdk/openjdk8:jdk8u302-b08-alpine
-
+FROM alpine:3.14.2
 WORKDIR /srv
 
+
+
 RUN apk --no-cache update && apk upgrade \
-    && apk add --no-cache bash openssl ca-certificates gnupg grep sed tini nss s6-dns go libpq git gcc musl-dev tomcat-native curl \
+    && apk add --no-cache tzdata bash openssl ca-certificates gnupg grep sed tini libc6-compat nss s6-dns go libpq git gcc musl-dev tomcat-native curl \
     && update-ca-certificates
+
+RUN apk add --no-cache openjdk8
+
+ENV JAVA_HOME=/usr/lib/jvm/java-1.8-openjdk
+ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
 
 RUN apk add libsass --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/
 
@@ -46,8 +52,8 @@ RUN curl -Ls https://repo.dotcms.com/artifactory/ext-release-local/com/dotcms/do
 
 RUN apk del -r --purge git gcc musl-dev go
 
-ENV JAVA_VERSION 8u302
-ENV JAVA_ALPINE_VERSION 8.302.01-r0
+ENV JAVA_VERSION 8u282
+ENV JAVA_ALPINE_VERSION 8.282.01-r0
 
 COPY --from=build-cms /srv/ /srv/
 COPY ROOT/ /
